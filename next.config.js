@@ -5,6 +5,16 @@
 await import('./src/env.js')
 
 /** @type {import("next").NextConfig} */
-const config = {}
+const config = {
+  logging: {
+    fetches: {
+      fullUrl: true
+    }
+  },
+  eslint: {
+    // This will ignore the ESLint check during builds. As I've set up Husky to run ESLint before, it's not necessary to run it again during builds and it will save some time during builds.
+    ignoreDuringBuilds: true
+  }
+}
 
 export default config
