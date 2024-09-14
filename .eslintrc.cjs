@@ -4,15 +4,17 @@ const config = {
   parserOptions: {
     project: true
   },
-  plugins: ['@typescript-eslint', 'prettier'],
+  plugins: ['@typescript-eslint', 'react', 'react-hooks'],
   extends: [
     'next/core-web-vitals',
+    'next/typescript',
     'plugin:@typescript-eslint/recommended-type-checked',
     'plugin:@typescript-eslint/stylistic-type-checked',
-    'plugin:prettier/recommended'
+    'plugin:prettier/recommended',
+    'prettier'
   ],
   rules: {
-    'prettier/prettier': 'error',
+    'prettier/prettier': ['error'],
     '@typescript-eslint/array-type': 'off',
     '@typescript-eslint/consistent-type-definitions': 'off',
     '@typescript-eslint/consistent-type-imports': [
@@ -36,7 +38,8 @@ const config = {
           attributes: false
         }
       }
-    ]
+    ],
+    'max-len': 'off'
   }
 }
 module.exports = config
