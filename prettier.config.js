@@ -7,8 +7,9 @@ const config = {
   jsxSingleQuote: true,
   bracketSpacing: true,
   tabWidth: 2,
-  endOfLine: 'lf',
-  plugins: ['prettier-plugin-tailwindcss']
+  endOfLine: 'auto',
+  plugins: ['prettier-plugin-tailwindcss'],
+  printWidth: 120
 }
 
 export default config
