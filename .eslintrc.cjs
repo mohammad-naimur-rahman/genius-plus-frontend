@@ -14,7 +14,6 @@ const config = {
     'prettier'
   ],
   rules: {
-    'prettier/prettier': ['error'],
     '@typescript-eslint/array-type': 'off',
     '@typescript-eslint/consistent-type-definitions': 'off',
     '@typescript-eslint/consistent-type-imports': [
@@ -39,7 +38,9 @@ const config = {
         }
       }
     ],
-    'max-len': 'off'
+    'max-len': 'off',
+    'prettier/prettier': ['error'],
+    '@typescript-eslint/no-empty-function': 'off'
   }
 }
 module.exports = config
