@@ -1,10 +1,9 @@
-import { type Config } from 'tailwindcss'
+import type { Config } from 'tailwindcss'
 import { fontFamily } from 'tailwindcss/defaultTheme'
 
-/** @type {import('tailwindcss').Config} */
-export default {
+const config = {
   darkMode: ['class'],
-  content: ['./src/**/*.tsx'],
+  content: ['./src/**/*.{ts,tsx}'],
   prefix: '',
   theme: {
     container: {
@@ -16,16 +15,64 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['var(--font-geist-sans)', ...fontFamily.sans]
+        sans: ['var(--font-sans)', ...fontFamily.sans]
       },
       colors: {
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
-        background: 'hsl(var(--background))',
-        foreground: 'hsl(var(--foreground))',
+        background: 'var(--background)',
+        foreground: {
+          DEFAULT: 'var(--foreground)',
+          border: 'var(--foreground-border)',
+          ['border-light']: 'var(--foreground-border-light)'
+        },
+        text: {
+          heading: 'var(--text-heading)',
+          primary: 'var(--text-primary)',
+          secondary: 'var(--text-secondary)',
+          ['gray-light']: 'var(--text-gray-light)',
+          gray: 'var(--text-gray)',
+          ['gray-dark']: 'var(--text-gray-dark)'
+        },
+        gray: {
+          primary: 'var(--gray-primary)',
+          secondary: 'var(--gray-secondary)'
+        },
+        pink: {
+          primary: 'var(--pink-primary)'
+        },
+        emerald: {
+          light: 'var(--emerald-light)',
+          primary: 'var(--emerald-primary)',
+          dark: 'var(--emerald-dark)'
+        },
+        cyan: {
+          light: 'var(--cyan-light)',
+          primary: 'var(--cyan-primary)',
+          dark: 'var(--cyan-dark)'
+        },
+        blue: {
+          light: 'var(--blue-light)',
+          primary: 'var(--blue-primary)',
+          dark: 'var(--blue-dark)'
+        },
+        magenta: {
+          light: 'var(--magenta-light)',
+          primary: 'var(--magenta-primary)',
+          dark: 'var(--magenta-dark)'
+        },
+        orange: {
+          light: 'var(--orange-light)',
+          primary: 'var(--orange-primary)',
+          dark: 'var(--orange-dark)'
+        },
+        error: {
+          DEFAULT: 'var(--error)',
+          light: 'var(--error-light)'
+        },
         primary: {
-          DEFAULT: 'hsl(var(--primary))',
+          DEFAULT: 'var(--primary)',
           foreground: 'hsl(var(--primary-foreground))'
         },
         secondary: {
@@ -76,3 +123,5 @@ export default {
   },
   plugins: [require('tailwindcss-animate')]
 } satisfies Config
+
+export default config
