@@ -9,6 +9,17 @@ export interface ResponseWithMeta<T> {
   message: string
 }
 
+export interface ResponseWithTokens<T> {
+  data: T
+  tokens: Tokens
+  message: string
+}
+
+export interface Tokens {
+  accessToken: string
+  refreshToken: string
+}
+
 export interface Metadata {
   currentPage: number
   totalPage: number
@@ -16,5 +27,5 @@ export interface Metadata {
 }
 
 export type WithId<T> = T & {
-  _id: string
+  id: number
 }

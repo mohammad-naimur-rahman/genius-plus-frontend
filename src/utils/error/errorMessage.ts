@@ -1,3 +1,5 @@
+import { type SerializedError } from '@reduxjs/toolkit'
+import { type FetchBaseQueryError } from '@reduxjs/toolkit/query'
 import { AxiosError } from 'axios'
 
 export const errorMessage = (error: Error): string => {
@@ -11,8 +13,16 @@ export const errorMessage = (error: Error): string => {
   }
 }
 
-export const rtkErrorMessage = (error: { data?: { message?: string }; message?: string }): string => {
-  const message = error.data?.message ?? error.message
-  console.error(message)
-  return message ?? 'An unknown error occurred'
+export const rtkErrorMessage = (error: FetchBaseQueryError | SerializedError): string => {
+  if ('data' in error && typeof error.data === 'object' && error.data !== null && 'message' in error.data) {
+    console.error(error.data)
+    return (error.data as { message?: string }).message ?? 'An unknown error occurred'
+  }
+
+  if ('message' in error) {
+    console.error(error)
+    return error.message ?? 'An unknown error occurred'
+  }
+
+  return 'An unknown error occurred'
 }

@@ -30,7 +30,7 @@ const Checkbox = React.forwardRef<
   }
 
   return (
-    <div className={cn('mb-4 flex flex-wrap items-center gap-x-2', containerClassName)}>
+    <div className={cn('flex flex-wrap items-center gap-x-2', containerClassName)}>
       <CheckboxPrimitive.Root
         id={id || name}
         ref={ref}
@@ -46,7 +46,7 @@ const Checkbox = React.forwardRef<
         </CheckboxPrimitive.Indicator>
       </CheckboxPrimitive.Root>
       {label && (
-        <Label className={cn('inline-block text-text-gray', labelClassName)} htmlFor={id || name}>
+        <Label className={cn('inline-block text-secondary-foreground', labelClassName)} htmlFor={id || name}>
           {label}
         </Label>
       )}

@@ -64,3 +64,9 @@
     @apply border-border;
   }
 }
+
+@layer utilities {
+  .text-link {
+    @apply text-sm font-medium text-blue-500 hover:underline;
+  }
+}

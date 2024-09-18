@@ -20,7 +20,7 @@ export default function AuthWrapper({ children, heroImgSrc, formPosition = 'left
     >
       <div className='flex w-full items-center justify-center lg:w-1/2'>{children}</div>
       <div className='flex w-full items-center justify-center lg:w-1/2'>
-        <Img src={heroImgSrc} alt='Auth Hero Image' className='max-w-52 lg:max-w-lg' />
+        <Img src={heroImgSrc} alt='Auth Hero Image' className='max-w-52 md:max-w-72 lg:max-w-lg' />
       </div>
     </main>
   )
