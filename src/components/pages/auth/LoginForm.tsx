@@ -59,7 +59,7 @@ export default function LoginForm() {
   }, [isSuccess, isError, error, data, rememberMe, push])
 
   return (
-    <AuthWrapper heroImgSrc={loginImg}>
+    <AuthWrapper heroImgSrc={loginImg as StaticImageData}>
       <Form methods={methods} onSubmit={handleSubmit(data => login(data))} className='w-full max-w-sm'>
         <AuthHeading title='Login' description='Login with your account to get started' />
         <Input name='email' type='email' label='Email' placeholder='Enter your email' required />
