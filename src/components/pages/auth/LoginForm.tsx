@@ -1,7 +1,9 @@
 'use client'
 
+import { setCookie } from 'cookies-next'
 import { LogIn } from 'lucide-react'
-import { useEffect } from 'react'
+import { type StaticImageData } from 'next/image'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import loginImg from '~/assets/images/pages/auth/login.jpeg'
@@ -12,7 +14,9 @@ import Form from '~/components/reusable/form/form'
 import { Input } from '~/components/reusable/form/input'
 import { Button } from '~/components/ui/button'
 import Link from '~/components/ui/llink'
+import usePush from '~/hooks/usePush'
 import { useLoginMutation } from '~/redux/features/authApi'
+import { calculateTokenExpiration } from '~/utils/auth/calculateTokenExpiration'
 import { rtkErrorMessage } from '~/utils/error/errorMessage'
 
 export interface LoginFormValues {
@@ -21,6 +25,8 @@ export interface LoginFormValues {
 }
 
 export default function LoginForm() {
+  const push = usePush()
+  const [rememberMe, setRememberMe] = useState(false)
   const methods = useForm<LoginFormValues>()
   const { handleSubmit } = methods
 
@@ -28,20 +34,43 @@ export default function LoginForm() {
 
   useEffect(() => {
     if (isSuccess) {
-      console.log(data)
+      const { refreshToken, accessToken } = { ...data.tokens }
+      const userData = { ...data.data }
+
+      if (rememberMe) {
+        setCookie('refreshToken', refreshToken, { maxAge: calculateTokenExpiration(refreshToken) })
+        setCookie('accessToken', accessToken, { maxAge: calculateTokenExpiration(accessToken) })
+
+        setCookie('userData', JSON.stringify(userData), {
+          maxAge: calculateTokenExpiration(refreshToken)
+        })
+      } else {
+        setCookie('refreshToken', refreshToken)
+        setCookie('accessToken', accessToken)
+
+        setCookie('userData', JSON.stringify(userData))
+      }
+
+      toast.success('Login successful!')
+      push('/dashboard')
     }
 
     if (isError) toast.error(rtkErrorMessage(error))
-  }, [isSuccess, isError, error, data])
+  }, [isSuccess, isError, error, data, rememberMe, push])
 
   return (
-    <AuthWrapper heroImgSrc={loginImg} formPosition='left'>
+    <AuthWrapper heroImgSrc={loginImg}>
       <Form methods={methods} onSubmit={handleSubmit(data => login(data))} className='w-full max-w-sm'>
         <AuthHeading title='Login' description='Login with your account to get started' />
         <Input name='email' type='email' label='Email' placeholder='Enter your email' required />
         <Input name='password' type='password' label='Password' placeholder='********' required />
         <div className='mb- mb-4 flex items-center justify-between gap-x-3 gap-y-2'>
-          <Checkbox label='Remember Me' id='remember-me' />
+          <Checkbox
+            label='Remember Me'
+            id='remember-me'
+            checked={rememberMe}
+            onCheckedChange={e => setRememberMe(e ? true : false)}
+          />
           <Link href='/forgot-password' className='text-link'>
             Forgot Password?
           </Link>
