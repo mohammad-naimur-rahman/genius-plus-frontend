@@ -2,7 +2,7 @@
 
 import * as React from 'react'
 
-import { RegisterOptions, useFormContext } from 'react-hook-form'
+import { type RegisterOptions, useFormContext } from 'react-hook-form'
 import { cn } from '~/lib/utils'
 import FormFieldError from './form-field-error'
 import FormLabel from './form-label'
@@ -42,15 +42,15 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
 
     return (
       <div className={cn(containerClassName)}>
-        <FormLabel label={label} labelClassName={labelClassName} name={id || name} required={required} hint={hint} />
+        <FormLabel label={label} labelClassName={labelClassName} name={id ?? name} required={required} hint={hint} />
         <div className='relative'>
           <textarea
             className={cn(
-              'flex min-h-[80px] w-full rounded-lg border border-foreground-border bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-text-gray-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50',
+              'flex min-h-[60px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50',
               { 'pl-10': icon },
               className
             )}
-            id={id || name}
+            id={id ?? name}
             ref={el => {
               if (typeof ref === 'function') {
                 ref(el)

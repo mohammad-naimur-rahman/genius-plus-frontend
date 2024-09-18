@@ -1,6 +1,6 @@
 import { Skeleton } from '~/components/ui/skeleton'
 import CardGrid from '../commonn/card-grid'
-import { type CardSkeletonsProps } from './company-card-skeletons'
+import { type CardSkeletonsProps } from './types'
 
 export default function BotCardSkeletons({ isLoading, className }: CardSkeletonsProps) {
   return (

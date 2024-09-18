@@ -1,10 +1,9 @@
-import type { Config } from 'tailwindcss'
 import { fontFamily } from 'tailwindcss/defaultTheme'
 
-const config = {
+/** @type {import('tailwindcss').Config} */
+module.exports = {
   darkMode: ['class'],
-  content: ['./src/**/*.{ts,tsx}'],
-  prefix: '',
+  content: ['src/**/*.{ts,tsx}'],
   theme: {
     container: {
       center: true,
@@ -14,65 +13,14 @@ const config = {
       }
     },
     extend: {
-      fontFamily: {
-        sans: ['var(--font-sans)', ...fontFamily.sans]
-      },
       colors: {
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
-        background: 'var(--background)',
-        foreground: {
-          DEFAULT: 'var(--foreground)',
-          border: 'var(--foreground-border)',
-          ['border-light']: 'var(--foreground-border-light)'
-        },
-        text: {
-          heading: 'var(--text-heading)',
-          primary: 'var(--text-primary)',
-          secondary: 'var(--text-secondary)',
-          ['gray-light']: 'var(--text-gray-light)',
-          gray: 'var(--text-gray)',
-          ['gray-dark']: 'var(--text-gray-dark)'
-        },
-        gray: {
-          primary: 'var(--gray-primary)',
-          secondary: 'var(--gray-secondary)'
-        },
-        pink: {
-          primary: 'var(--pink-primary)'
-        },
-        emerald: {
-          light: 'var(--emerald-light)',
-          primary: 'var(--emerald-primary)',
-          dark: 'var(--emerald-dark)'
-        },
-        cyan: {
-          light: 'var(--cyan-light)',
-          primary: 'var(--cyan-primary)',
-          dark: 'var(--cyan-dark)'
-        },
-        blue: {
-          light: 'var(--blue-light)',
-          primary: 'var(--blue-primary)',
-          dark: 'var(--blue-dark)'
-        },
-        magenta: {
-          light: 'var(--magenta-light)',
-          primary: 'var(--magenta-primary)',
-          dark: 'var(--magenta-dark)'
-        },
-        orange: {
-          light: 'var(--orange-light)',
-          primary: 'var(--orange-primary)',
-          dark: 'var(--orange-dark)'
-        },
-        error: {
-          DEFAULT: 'var(--error)',
-          light: 'var(--error-light)'
-        },
+        background: 'hsl(var(--background))',
+        foreground: 'hsl(var(--foreground))',
         primary: {
-          DEFAULT: 'var(--primary)',
+          DEFAULT: 'hsl(var(--primary))',
           foreground: 'hsl(var(--primary-foreground))'
         },
         secondary: {
@@ -101,9 +49,12 @@ const config = {
         }
       },
       borderRadius: {
-        lg: 'var(--radius)',
-        md: 'calc(var(--radius) - 2px)',
+        lg: `var(--radius)`,
+        md: `calc(var(--radius) - 2px)`,
         sm: 'calc(var(--radius) - 4px)'
+      },
+      fontFamily: {
+        sans: ['var(--font-sans)', ...fontFamily.sans]
       },
       keyframes: {
         'accordion-down': {
@@ -122,6 +73,4 @@ const config = {
     }
   },
   plugins: [require('tailwindcss-animate')]
-} satisfies Config
-
-export default config
+}

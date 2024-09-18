@@ -3,7 +3,7 @@
 import * as React from 'react'
 
 import { Eye, EyeOff } from 'lucide-react'
-import { RegisterOptions, useFormContext } from 'react-hook-form'
+import { type RegisterOptions, useFormContext } from 'react-hook-form'
 import { cn } from '~/lib/utils'
 import FormFieldError from './form-field-error'
 import FormLabel from './form-label'
@@ -49,13 +49,13 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 
     return (
       <div className={cn(containerClassName)}>
-        <FormLabel label={label} labelClassName={labelClassName} name={id || name} required={required} hint={hint} />
+        <FormLabel label={label} labelClassName={labelClassName} name={id ?? name} required={required} hint={hint} />
         <div className='relative'>
           <input
-            id={id || name}
+            id={id ?? name}
             type={type === 'password' ? (showPassword ? 'text' : 'password') : type}
             className={cn(
-              'flex h-10 w-full rounded-lg border border-foreground-border bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-background file:text-sm file:font-medium placeholder:text-text-gray-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50',
+              'flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50',
               { 'pl-10': icon && iconPosition === 'left' },
               { 'pr-10': icon && iconPosition === 'right' },
               className
