@@ -32,15 +32,16 @@ export default function LoginForm() {
 
   useEffect(() => {
     if (isSuccess) {
+      toast.success('Login successful!')
+
       const { refreshToken, accessToken } = { ...data.tokens }
       const userData = { ...data.data }
 
       if (rememberMe) saveCookies(accessToken, refreshToken, userData, true)
       else saveCookies(accessToken, refreshToken, userData)
 
-      toast.success('Login successful!')
-      if (userData.role === 'user') push('/admin/dashboard')
-      else push('/features')
+      if (userData.role === 'user') push('/features')
+      else push('/admin/dashboard')
     }
 
     if (isError) toast.error(rtkErrorMessage(error))

@@ -11,28 +11,20 @@ import AuthWrapper from '~/components/reusable/auth/AuthWrapper'
 import Form from '~/components/reusable/form/form'
 import { Input } from '~/components/reusable/form/input'
 import { Button } from '~/components/ui/button'
-import Link from '~/components/ui/llink'
-import { signupPasswordRegex } from '~/configs/auth'
-import { useSignupMutation } from '~/redux/features/authApi'
+import { useForgotPasswordMutation } from '~/redux/features/authApi'
 import { rtkErrorMessage } from '~/utils/error/errorMessage'
 
-export interface RegisterFormValues {
-  name: string
+export interface ForgotPasswordFormValues {
   email: string
   password: string
 }
 
-export default function RegisterForm() {
-  const methods = useForm<RegisterFormValues>()
+export default function ForgotPasswordForm() {
   const [emailSent, setemailSent] = useState(false)
-  const {
-    handleSubmit,
-    formState: {
-      errors: { password: passwordErrors }
-    }
-  } = methods
+  const methods = useForm<ForgotPasswordFormValues>()
+  const { handleSubmit } = methods
 
-  const [signup, { isLoading, isSuccess, isError, error }] = useSignupMutation()
+  const [sendVerificationLink, { isLoading, isSuccess, isError, error }] = useForgotPasswordMutation()
 
   useEffect(() => {
     if (isSuccess) {
@@ -42,9 +34,8 @@ export default function RegisterForm() {
 
     if (isError) toast.error(rtkErrorMessage(error))
   }, [isSuccess, isError, error])
-
   return (
-    <AuthWrapper heroImgSrc={loginImg} formPosition='right'>
+    <AuthWrapper heroImgSrc={loginImg}>
       {emailSent ? (
         <AuthEmailVerify
           title='Check your email'
@@ -55,34 +46,12 @@ export default function RegisterForm() {
       ) : isError ? (
         <AuthEmailVerify title='Email sending failed' description={rtkErrorMessage(error)} state='failed' />
       ) : (
-        <Form methods={methods} onSubmit={handleSubmit(data => signup(data))} className='w-full max-w-sm'>
-          <AuthHeading title='Signup' description='Get started with us for free.' />
-          <Input name='name' type='text' label='Full Name' placeholder='Enter your name' required />
+        <Form methods={methods} onSubmit={handleSubmit(data => sendVerificationLink(data))} className='w-full max-w-sm'>
+          <AuthHeading title='Forgot password?' description='Enter your email to reset your password.' />
           <Input name='email' type='email' label='Email' placeholder='Enter your email' required />
-          <Input
-            name='password'
-            type='password'
-            label='Password'
-            placeholder='********'
-            required
-            hookFormConfig={{ pattern: signupPasswordRegex }}
-          />
-          {passwordErrors?.type === 'pattern' && (
-            <p className='mb-3 text-xs text-destructive'>
-              Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase
-              letter, one number and one special character.
-            </p>
-          )}
-
           <Button type='submit' icon={<ChevronRight />} iconPosition='right' isLoading={isLoading}>
-            Register
+            Send verification link
           </Button>
-          <p className='mt-2 text-center text-sm text-muted-foreground'>
-            Already have an account?{' '}
-            <Link href='/login' className='text-link'>
-              Login
-            </Link>
-          </p>
         </Form>
       )}
     </AuthWrapper>
