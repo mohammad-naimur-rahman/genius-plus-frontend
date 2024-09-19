@@ -4,7 +4,7 @@ import { features } from '~/constants/contents/features'
 
 export default function AllFeatures() {
   return (
-    <div className='grid grid-cols-4 gap-5'>
+    <div className='grid grid-cols-3 gap-5'>
       {features.map(feature => (
         <Link key={feature.id} href={feature.href}>
           <FeatureCard feature={feature} />

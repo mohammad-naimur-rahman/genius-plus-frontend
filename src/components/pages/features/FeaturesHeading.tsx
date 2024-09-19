@@ -10,7 +10,7 @@ export default function FeaturesHeading() {
   const userName = userDataParsed?.name
   return (
     <div>
-      <Typography variant='h1' className='mb-8'>
+      <Typography variant='h1' className='mb-10'>
         {`Welcome back, ${userName}`}
       </Typography>
     </div>
