@@ -2,7 +2,6 @@
 
 import { setCookie } from 'cookies-next'
 import { LogIn } from 'lucide-react'
-import { type StaticImageData } from 'next/image'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
@@ -59,7 +58,7 @@ export default function LoginForm() {
   }, [isSuccess, isError, error, data, rememberMe, push])
 
   return (
-    <AuthWrapper heroImgSrc={loginImg as StaticImageData}>
+    <AuthWrapper heroImgSrc={loginImg}>
       <Form methods={methods} onSubmit={handleSubmit(data => login(data))} className='w-full max-w-sm'>
         <AuthHeading title='Login' description='Login with your account to get started' />
         <Input name='email' type='email' label='Email' placeholder='Enter your email' required />
