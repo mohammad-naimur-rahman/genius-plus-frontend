@@ -7,6 +7,7 @@ import Form from '~/components/reusable/form/form'
 import { Textarea } from '~/components/reusable/form/textarea'
 import { Button } from '~/components/ui/button'
 import { Calendar } from '~/components/ui/calendar'
+import CreateSingleTodoForm from './CreateSingleTodoForm'
 
 interface TodoFormValues {
   text: string
@@ -42,13 +43,23 @@ export default function AITodo() {
                 Generate Today&apos;s Plan
               </Button>
               <Button size='icon' variant='outline' className='rounded-full border-muted-foreground'>
-                <Mic />
+                <Mic className='size-5' />
               </Button>
             </div>
           </Form>
         </div>
-        <Calendar mode='single' selected={date} onSelect={setDate} className='w-auto rounded-lg border' />
+        <Calendar
+          mode='single'
+          selected={date}
+          onSelect={setDate}
+          disabled={date => date >= new Date(Date.now() + 24 * 60 * 60 * 1000)}
+          className='w-auto rounded-lg border'
+        />
       </div>
+
+      <p>There&apos;re no plans for today yet</p>
+
+      <CreateSingleTodoForm />
     </div>
   )
 }
