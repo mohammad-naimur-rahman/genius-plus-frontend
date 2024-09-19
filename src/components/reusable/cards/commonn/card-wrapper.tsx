@@ -10,7 +10,10 @@ export default function CardWrapper({ children, className, ...props }: Props) {
   return (
     <div
       {...props}
-      className={cn('relative rounded-lg border border-foreground-border bg-foreground p-4 shadow-sm', className)}
+      className={cn(
+        'relative rounded-lg border bg-primary-foreground p-4 shadow-sm transition-all duration-300 hover:shadow-md',
+        className
+      )}
     >
       {children}
     </div>

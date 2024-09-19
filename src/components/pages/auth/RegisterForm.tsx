@@ -57,7 +57,7 @@ export default function RegisterForm() {
       ) : (
         <Form methods={methods} onSubmit={handleSubmit(data => signup(data))} className='w-full max-w-sm'>
           <AuthHeading title='Signup' description='Get started with us for free.' />
-          <Input name='name' type='text' label='Full Name' placeholder='Enter your name' required />
+          <Input name='name' type='text' label='Name' placeholder='Enter your name' required />
           <Input name='email' type='email' label='Email' placeholder='Enter your email' required />
           <Input
             name='password'

@@ -23,9 +23,9 @@ const tags: Record<TypographyVariant, ElementType> = {
 }
 
 const sizes: Record<TypographyVariant, string> = {
-  h1: 'font-semibold text-3xl lg:text-4xl xl:text-5xl',
-  h2: 'font-semibold text-2xl lg:text-3xl xl:text-4xl',
-  h3: 'font-semibold text-xl lg:text-2xl xl:text-3xl',
+  h1: 'font-light text-3xl lg:text-4xl xl:text-5xl',
+  h2: 'font-light text-2xl lg:text-3xl xl:text-4xl',
+  h3: 'font-light text-xl lg:text-2xl xl:text-3xl',
   h4: 'font-semibold text-xl sm:text-2xl',
   h5: 'font-semibold text-lg sm:text-xl',
   h6: 'font-semibold',
