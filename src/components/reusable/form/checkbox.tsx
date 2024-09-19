@@ -1,7 +1,9 @@
+'use client'
+
 import * as CheckboxPrimitive from '@radix-ui/react-checkbox'
 import { Check } from 'lucide-react'
 import * as React from 'react'
-import { useFormContext, UseFormReturn } from 'react-hook-form'
+import { useFormContext, type UseFormReturn } from 'react-hook-form'
 import { Label } from '~/components/ui/label'
 import { cn } from '~/lib/utils'
 
@@ -32,7 +34,7 @@ const Checkbox = React.forwardRef<
   return (
     <div className={cn('flex flex-wrap items-center gap-x-2', containerClassName)}>
       <CheckboxPrimitive.Root
-        id={id || name}
+        id={id ?? name}
         ref={ref}
         className={cn(
           'peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground',

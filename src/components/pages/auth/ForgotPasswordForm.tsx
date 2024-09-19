@@ -4,7 +4,7 @@ import { ChevronRight } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
-import loginImg from '~/assets/images/pages/auth/login.jpeg'
+import heroImg from '~/assets/images/pages/auth/forgetPassword.jpeg'
 import AuthEmailVerify from '~/components/reusable/auth/AuthEmailVerify'
 import AuthHeading from '~/components/reusable/auth/AuthHeading'
 import AuthWrapper from '~/components/reusable/auth/AuthWrapper'
@@ -35,7 +35,7 @@ export default function ForgotPasswordForm() {
     if (isError) toast.error(rtkErrorMessage(error))
   }, [isSuccess, isError, error])
   return (
-    <AuthWrapper heroImgSrc={loginImg}>
+    <AuthWrapper heroImgSrc={heroImg}>
       {emailSent ? (
         <AuthEmailVerify
           title='Check your email'

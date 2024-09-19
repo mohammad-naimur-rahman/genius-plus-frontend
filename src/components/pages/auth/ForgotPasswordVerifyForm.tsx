@@ -3,7 +3,7 @@
 import { useSearchParams } from 'next/navigation'
 import { useEffect } from 'react'
 import toast from 'react-hot-toast'
-import loginImg from '~/assets/images/pages/auth/login.jpeg'
+import heroImg from '~/assets/images/pages/auth/verifyForgetPassword.jpeg'
 import AuthEmailVerify from '~/components/reusable/auth/AuthEmailVerify'
 import AuthWrapper from '~/components/reusable/auth/AuthWrapper'
 import usePush from '~/hooks/usePush'
@@ -35,7 +35,7 @@ export default function ForgotPasswordVerifyForm() {
   }, [isSuccess, isError, error, data, push])
 
   return (
-    <AuthWrapper heroImgSrc={loginImg}>
+    <AuthWrapper heroImgSrc={heroImg}>
       <div className='flex items-center justify-center'>
         {isLoading ? (
           <AuthEmailVerify

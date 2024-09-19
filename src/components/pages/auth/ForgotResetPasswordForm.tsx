@@ -5,7 +5,7 @@ import { useSearchParams } from 'next/navigation'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
-import loginImg from '~/assets/images/pages/auth/login.jpeg'
+import heroImg from '~/assets/images/pages/auth/resetForgetPassword.jpeg'
 import AuthHeading from '~/components/reusable/auth/AuthHeading'
 import AuthWrapper from '~/components/reusable/auth/AuthWrapper'
 import Form from '~/components/reusable/form/form'
@@ -59,7 +59,7 @@ export default function ForgotResetPasswordForm() {
   }
 
   return (
-    <AuthWrapper heroImgSrc={loginImg}>
+    <AuthWrapper heroImgSrc={heroImg}>
       <Form methods={methods} onSubmit={handleSubmit(onSubmit)} className='w-full max-w-sm'>
         <AuthHeading title='Forgot password?' description='Enter your email to reset your password.' />
         <Input
