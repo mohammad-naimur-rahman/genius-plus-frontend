@@ -20,6 +20,13 @@ const authApi = api.injectEndpoints({
       query: body => ({
         url: `${rootApi}/signup`,
         method: 'POST',
+        body
+      })
+    }),
+    signupVerify: builder.mutation<ResponseWithTokens<WithId<User>>, { code: string }>({
+      query: body => ({
+        url: `${rootApi}/signup-verify`,
+        method: 'POST',
         body,
         credentials: 'include'
       })
@@ -27,4 +34,4 @@ const authApi = api.injectEndpoints({
   })
 })
 
-export const { useLoginMutation, useSignupMutation } = authApi
+export const { useLoginMutation, useSignupMutation, useSignupVerifyMutation } = authApi

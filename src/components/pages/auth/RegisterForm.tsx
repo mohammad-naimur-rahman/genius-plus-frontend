@@ -1,17 +1,17 @@
 'use client'
 
-import { ChevronRight, MailCheck } from 'lucide-react'
+import { ChevronRight } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import loginImg from '~/assets/images/pages/auth/login.jpeg'
+import AuthEmailVerify from '~/components/reusable/auth/AuthEmailVerify'
 import AuthHeading from '~/components/reusable/auth/AuthHeading'
 import AuthWrapper from '~/components/reusable/auth/AuthWrapper'
 import Form from '~/components/reusable/form/form'
 import { Input } from '~/components/reusable/form/input'
 import { Button } from '~/components/ui/button'
 import Link from '~/components/ui/llink'
-import Typography from '~/components/ui/typography'
 import { signupPasswordRegex } from '~/configs/auth'
 import usePush from '~/hooks/usePush'
 import { useSignupMutation } from '~/redux/features/authApi'
@@ -48,18 +48,12 @@ export default function RegisterForm() {
   return (
     <AuthWrapper heroImgSrc={loginImg} formPosition='right'>
       {emailSent ? (
-        <div className='mt-10 flex items-center justify-center'>
-          <div className='flex flex-col items-center justify-center text-center'>
-            <MailCheck size={72} strokeWidth={1} className='text-emerald-500' />
-            <Typography variant='h3' className='mt-5 text-center font-medium'>
-              Check your email
-            </Typography>
-            <p className='mt-5 max-w-md text-balance text-lg font-medium text-muted-foreground'>
-              We&apos;ve sent you an email with the email verification code. Click on the link in the email to verify
-              your account.
-            </p>
-          </div>
-        </div>
+        <AuthEmailVerify
+          title='Check your email'
+          description=" We've sent you an email with the email verification code. Click on the link in the email to verify
+              your account."
+          state='sent'
+        />
       ) : (
         <Form methods={methods} onSubmit={handleSubmit(data => signup(data))} className='w-full max-w-sm'>
           <AuthHeading title='Signup' description='Get started with us for free.' />
@@ -91,6 +85,7 @@ export default function RegisterForm() {
           </p>
         </Form>
       )}
+      {isError && <AuthEmailVerify title='Email sending failed' description={rtkErrorMessage(error)} state='failed' />}
     </AuthWrapper>
   )
 }

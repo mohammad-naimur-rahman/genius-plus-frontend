@@ -1,6 +1,5 @@
 'use client'
 
-import { setCookie } from 'cookies-next'
 import { LogIn } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -15,7 +14,7 @@ import { Button } from '~/components/ui/button'
 import Link from '~/components/ui/llink'
 import usePush from '~/hooks/usePush'
 import { useLoginMutation } from '~/redux/features/authApi'
-import { calculateTokenExpiration } from '~/utils/auth/calculateTokenExpiration'
+import { saveCookies } from '~/utils/auth/saveCookies'
 import { rtkErrorMessage } from '~/utils/error/errorMessage'
 
 export interface LoginFormValues {
@@ -36,22 +35,12 @@ export default function LoginForm() {
       const { refreshToken, accessToken } = { ...data.tokens }
       const userData = { ...data.data }
 
-      if (rememberMe) {
-        setCookie('refreshToken', refreshToken, { maxAge: calculateTokenExpiration(refreshToken) })
-        setCookie('accessToken', accessToken, { maxAge: calculateTokenExpiration(accessToken) })
-
-        setCookie('userData', JSON.stringify(userData), {
-          maxAge: calculateTokenExpiration(refreshToken)
-        })
-      } else {
-        setCookie('refreshToken', refreshToken)
-        setCookie('accessToken', accessToken)
-
-        setCookie('userData', JSON.stringify(userData))
-      }
+      if (rememberMe) saveCookies(accessToken, refreshToken, userData, true)
+      else saveCookies(accessToken, refreshToken, userData)
 
       toast.success('Login successful!')
-      push('/dashboard')
+      if (userData.role === 'user') push('/admin/dashboard')
+      else push('/features')
     }
 
     if (isError) toast.error(rtkErrorMessage(error))

@@ -3,4 +3,5 @@ export interface User {
   email: string
   createdAt: string
   updatedAt: string
+  role: 'user' | 'admin'
 }

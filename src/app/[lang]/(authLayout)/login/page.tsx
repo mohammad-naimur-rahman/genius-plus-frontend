@@ -4,6 +4,7 @@ import { genTitle } from '~/utils/misc/genTitle'
 export const metadata = {
   title: genTitle('Login')
 }
+
 export default function LoginPage() {
   return <LoginForm />
 }
