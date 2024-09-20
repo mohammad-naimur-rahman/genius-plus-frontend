@@ -57,7 +57,9 @@ export default function AITodo() {
         />
       </div>
 
-      <p>There&apos;re no plans for today yet</p>
+      <p className='mb-5 mt-10 italic text-muted-foreground'>
+        There&apos;re no plans for today yet. Let&apos;s start with creating one first or let&apos;s generate with AI
+      </p>
 
       <CreateSingleTodoForm />
     </div>
