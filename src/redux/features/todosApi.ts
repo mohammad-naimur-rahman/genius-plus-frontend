@@ -12,7 +12,8 @@ const todosApi = api.injectEndpoints({
         url: rootApi,
         method: 'POST',
         body
-      })
+      }),
+      invalidatesTags: ['todos']
     })
   })
 })
