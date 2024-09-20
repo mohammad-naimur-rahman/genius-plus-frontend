@@ -23,7 +23,7 @@ const todosApi = api.injectEndpoints({
       }),
       invalidatesTags: ['todos', 'todo']
     }),
-    getAllTodos: build.query<Response<Todo[]>, { date?: string }>({
+    getAllTodos: build.query<Response<WithId<Todo>[]>, { date?: string }>({
       query: params => ({
         url: rootApi,
         params

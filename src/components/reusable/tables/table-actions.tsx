@@ -1,4 +1,4 @@
-import React, { HTMLAttributes } from 'react'
+import React, { type HTMLAttributes } from 'react'
 import { cn } from '~/lib/utils'
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
@@ -8,7 +8,7 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
 
 export default function TableActions({ classname, children, ...props }: Props) {
   return (
-    <div className={cn('flex gap-2 [&svg]:size-[18px] [&svg]:cursor-pointer', classname)} {...props}>
+    <div className={cn('flex gap-2 [&>svg]:size-5 [&>svg]:cursor-pointer', classname)} {...props}>
       {children}
     </div>
   )
