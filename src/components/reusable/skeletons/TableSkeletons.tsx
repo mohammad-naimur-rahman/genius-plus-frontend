@@ -10,10 +10,10 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
 export default function TableSkeletons({ isLoading, className, ...rest }: Props) {
   return (
     isLoading && (
-      <div className={cn('flex flex-col gap-y-1', className)} {...rest}>
+      <div className={cn('flex flex-col gap-y-2', className)} {...rest}>
         {Array.from({ length: 10 }, (_, i) => (
           <div key={i} className='flex items-center justify-between gap-x-2'>
-            <Skeleton className='h-9 w-full rounded-lg' />
+            <Skeleton className='h-10 w-full rounded-lg' />
           </div>
         ))}
       </div>
