@@ -17,16 +17,17 @@ import {
   DialogTrigger
 } from '~/components/ui/dialog'
 import { useCreateTodoForADaywithAIMutation } from '~/redux/features/todosApi'
-import { isTomorrow } from '~/utils/date/formatDate'
+import { formatDate, isTomorrow } from '~/utils/date/formatDate'
 import { rtkErrorMessage } from '~/utils/error/errorMessage'
 import { isObjEmpty } from '~/utils/misc/isEmpty'
 
 export interface TodoWithAIFormValues {
   text: string
+  date: Date
 }
 
 interface Props {
-  date: Date | undefined
+  date: Date
 }
 
 export default function CreateTodoWithAIModal({ date }: Props) {
@@ -47,7 +48,7 @@ export default function CreateTodoWithAIModal({ date }: Props) {
       reset()
       setOpen(false)
     }
-    void createTodo(data)
+    void createTodo({ ...data, date: formatDate(date) as unknown as Date })
   }
 
   const handleTranscriptChange = (transcript: string) => {

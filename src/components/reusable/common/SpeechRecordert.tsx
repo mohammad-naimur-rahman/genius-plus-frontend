@@ -9,7 +9,6 @@ interface SpeechRecorderProps {
   MicIcon?: React.ReactNode
   StopIcon?: React.ReactNode
   buttonClassName?: string
-  containerClassName?: string
 }
 
 /**
@@ -20,7 +19,6 @@ interface SpeechRecorderProps {
  * @param {React.ReactNode} [props.MicIcon] - Custom icon for the mic button (optional).
  * @param {React.ReactNode} [props.StopIcon] - Custom icon for the stop button (optional).
  * @param {string} [props.buttonClassName] - Custom styles for the buttons (optional).
- * @param {string} [props.containerClassName] - Custom styles for the container (optional).
  * @return {JSX.Element} The speech recorder component.
  *
  * @example
@@ -29,15 +27,13 @@ interface SpeechRecorderProps {
  *   MicIcon={<CustomMicIcon />}
  *   StopIcon={<CustomStopIcon />}
  *   buttonClassName="custom-button-styles"
- *   containerClassName="custom-container-styles"
  * />
  */
 export function SpeechRecorder({
   onTranscriptChange,
   MicIcon = <Mic className='size-5' />,
   StopIcon = <Square className='size-4' />,
-  buttonClassName = '',
-  containerClassName = ''
+  buttonClassName = ''
 }: SpeechRecorderProps) {
   const { isListening, startListening, stopListening } = useSpeechRecognition({ onTranscriptChange })
 
@@ -50,19 +46,17 @@ export function SpeechRecorder({
   }
 
   return (
-    <div className={containerClassName}>
-      <Button
-        onClick={handleMicClick}
-        size='icon'
-        variant='outline'
-        className={`rounded-full ${
-          isListening
-            ? 'animate-pulse border-destructive text-destructive hover:text-destructive'
-            : 'border-muted-foreground text-secondary-foreground'
-        } ${buttonClassName}`}
-      >
-        {isListening ? StopIcon : MicIcon}
-      </Button>
-    </div>
+    <Button
+      onClick={handleMicClick}
+      size='icon'
+      variant='outline'
+      className={`rounded-full ${
+        isListening
+          ? 'animate-pulse border-destructive text-destructive hover:text-destructive'
+          : 'border-muted-foreground text-secondary-foreground'
+      } ${buttonClassName}`}
+    >
+      {isListening ? StopIcon : MicIcon}
+    </Button>
   )
 }

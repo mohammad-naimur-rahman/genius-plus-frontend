@@ -1,7 +1,7 @@
 'use client'
 
 import { format } from 'date-fns'
-import { HelpCircle, Trash2 } from 'lucide-react'
+import { Forward, HelpCircle, Trash2 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import ConfirmationPrompt from '~/components/reusable/dashboard/confirmation-prompt'
@@ -16,7 +16,7 @@ import { useDeleteTodoMutation, useUpdateTodoMutation } from '~/redux/features/t
 import { type Response, type WithId } from '~/types/common/Response'
 import { type Todo } from '~/types/Todo'
 import { getUserData } from '~/utils/auth/getUserId'
-import { isToday, isTomorrow, isYesterday } from '~/utils/date/formatDate'
+import { formatDate, isToday, isTomorrow, isYesterday } from '~/utils/date/formatDate'
 import { rtkErrorMessage } from '~/utils/error/errorMessage'
 import { isArrEmpty } from '~/utils/misc/isEmpty'
 import UpdateTodoModal from './UpdateTodoModal'
@@ -45,8 +45,15 @@ export default function AllTodos({ date, isLoading, isSuccess, data }: Props) {
   }, [isDeleteSuccess, isError, error])
 
   useEffect(() => {
-    if (isUpdateSuccess)
-      toast.success(updatedTododata?.data.is_complete ? 'Todo marked as complete!' : 'Todo marked as incomplete!')
+    if (isUpdateSuccess) {
+      const successMsg =
+        formatDate(updatedTododata?.data.date as unknown as Date) !== formatDate(date!)
+          ? 'Todo forwarded to today'
+          : updatedTododata?.data.is_complete
+            ? 'Todo marked as complete!'
+            : 'Todo marked as incomplete!'
+      toast.success(successMsg)
+    }
     if (isUpdateError) toast.error(rtkErrorMessage(updateError))
   }, [isUpdateSuccess, isUpdateError, updateError, updatedTododata])
 
@@ -79,12 +86,15 @@ export default function AllTodos({ date, isLoading, isSuccess, data }: Props) {
             <TableBody>
               {data?.data?.map(todo => (
                 <TableRow key={todo.id} className='relative'>
-                  <TableCell>
-                    <Checkbox
-                      checked={todo.is_complete}
-                      onClick={() => updateTodo({ id: todo.id, body: { is_complete: !todo.is_complete } })}
-                    />
-                  </TableCell>
+                  {isToday(date) && (
+                    <TableCell>
+                      <Checkbox
+                        checked={todo.is_complete}
+                        onClick={() => updateTodo({ id: todo.id, body: { is_complete: !todo.is_complete } })}
+                      />
+                    </TableCell>
+                  )}
+
                   <TableCell className='flex items-center gap-x-1'>
                     {todo.title}
                     {todo.description && (
@@ -112,6 +122,20 @@ export default function AllTodos({ date, isLoading, isSuccess, data }: Props) {
                           setdeleteId(todo.id)
                         }}
                       />
+                      {!isToday(date) && !isTomorrow(date) && !todo.is_complete && (
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger
+                              onClick={() => updateTodo({ id: todo.id, body: { date: formatDate(new Date()) } })}
+                            >
+                              <Forward className='text-emerald-500' />
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p>Forward this task to today&apos;s task</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      )}
                     </TableActions>
                   </TableCell>
                   {todo.is_complete && (

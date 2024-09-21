@@ -46,10 +46,13 @@ const todosApi = api.injectEndpoints({
       }),
       invalidatesTags: ['todos']
     }),
-    clearMyDaysTodo: build.mutation<void, void>({
-      query: () => ({
+    clearMyDaysTodo: build.mutation<void, string>({
+      query: date => ({
         url: `${rootApi}/delete-the-day`,
-        method: 'DELETE'
+        method: 'DELETE',
+        params: {
+          date
+        }
       }),
       invalidatesTags: ['todos']
     })

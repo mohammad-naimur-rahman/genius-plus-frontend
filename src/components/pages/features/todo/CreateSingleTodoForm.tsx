@@ -19,6 +19,7 @@ import {
 } from '~/components/ui/dialog'
 import { useCreateTodoMutation } from '~/redux/features/todosApi'
 import { convertTo12Hour } from '~/utils/date/convertTo12hour'
+import { formatDate } from '~/utils/date/formatDate'
 import { rtkErrorMessage } from '~/utils/error/errorMessage'
 import { isObjEmpty } from '~/utils/misc/isEmpty'
 
@@ -29,9 +30,14 @@ export interface SingleTodoFormValues {
   time_range_to: string
   priority: 'Very Low' | 'Low' | 'Moderate' | 'High' | 'Very High'
   time_range: string
+  date: Date
 }
 
-export default function CreateSingleTodoForm() {
+interface Props {
+  date: Date
+}
+
+export default function CreateSingleTodoForm({ date }: Props) {
   const methods = useForm<SingleTodoFormValues>()
   const {
     handleSubmit,
@@ -58,7 +64,7 @@ export default function CreateSingleTodoForm() {
 
     const from = convertTo12Hour(data.time_range_from)
     const to = convertTo12Hour(data.time_range_to)
-    void createTodo({ ...data, time_range: `${from} - ${to}` })
+    void createTodo({ ...data, time_range: `${from} - ${to}`, date: formatDate(date) as unknown as Date })
   }
 
   useEffect(() => {

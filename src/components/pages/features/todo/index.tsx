@@ -14,8 +14,8 @@ import CreateSingleTodoForm from './CreateSingleTodoForm'
 import CreateTodoWithAIModal from './CreateTodoWithAIModal'
 
 export default function AITodo() {
-  const [date, setDate] = useState<Date | undefined>(new Date())
-  const { data, isLoading, isSuccess } = useGetAllTodosQuery({ date: date ? formatDate(date) : undefined })
+  const [date, setDate] = useState<Date>(new Date())
+  const { data, isLoading, isSuccess } = useGetAllTodosQuery({ date: formatDate(date) })
 
   const [openPrompt, setopenPrompt] = useState<boolean>(false)
   const [clearMyDay, { isLoading: isDeleteLoading, isSuccess: isDeleteSuccess, isError, error }] =
@@ -40,9 +40,9 @@ export default function AITodo() {
           <AllTodos date={date} isLoading={isLoading} isSuccess={isSuccess} data={data!} />
 
           <div className='flex items-center gap-x-3'>
-            {isSuccess && ((isToday(date) ?? isTomorrow(date)) ? <CreateSingleTodoForm /> : null)}
+            {isSuccess && ((isToday(date) ?? isTomorrow(date)) ? <CreateSingleTodoForm date={date} /> : null)}
 
-            {isSuccess && data?.data.length && isToday(date) ? (
+            {(isToday(date) ?? isTomorrow(date)) && isSuccess && data?.data.length ? (
               <Button
                 variant='destructive'
                 icon={<Trash2 />}
@@ -50,11 +50,11 @@ export default function AITodo() {
                 onClick={() => setopenPrompt(true)}
                 isLoading={isDeleteLoading}
               >
-                Clear my day
+                {isToday(date) ? 'Clear my day' : "Clear tomorrow's plan"}
               </Button>
             ) : null}
 
-            {((isSuccess && !data?.data.length && isToday(date)) ?? isTomorrow(date)) ? (
+            {(isToday(date) ?? isTomorrow(date)) && isSuccess && !data?.data.length ? (
               <CreateTodoWithAIModal date={date} />
             ) : null}
           </div>
@@ -62,7 +62,7 @@ export default function AITodo() {
         <Calendar
           mode='single'
           selected={date}
-          onSelect={setDate}
+          onSelect={newDate => newDate && setDate(newDate)}
           disabled={date => date >= new Date(Date.now() + oneDayAhead)}
           className='w-auto rounded-lg border'
         />
@@ -71,7 +71,7 @@ export default function AITodo() {
         open={openPrompt}
         onOpenChange={setopenPrompt}
         title="Are you sure clear todya's plan?"
-        cb={clearMyDay}
+        cb={() => clearMyDay(formatDate(date) ?? '')}
       />
     </div>
   )
