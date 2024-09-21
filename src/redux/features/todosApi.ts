@@ -31,7 +31,7 @@ const todosApi = api.injectEndpoints({
       }),
       providesTags: ['todos']
     }),
-    updateTodo: build.mutation<Response<WithId<Todo>>, { id: string; body: Partial<Todo> }>({
+    updateTodo: build.mutation<Response<WithId<Todo>>, { id: number; body: Partial<Todo> }>({
       query: ({ id, body }) => ({
         url: `${rootApi}/${id}`,
         method: 'PATCH',
@@ -39,7 +39,7 @@ const todosApi = api.injectEndpoints({
       }),
       invalidatesTags: ['todos', 'todo']
     }),
-    deleteTodo: build.mutation<void, string>({
+    deleteTodo: build.mutation<void, number>({
       query: id => ({
         url: `${rootApi}/${id}`,
         method: 'DELETE'

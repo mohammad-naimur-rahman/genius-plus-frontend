@@ -1,6 +1,6 @@
 'use client'
 
-import { ListPlus } from 'lucide-react'
+import { PencilLineIcon } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
@@ -17,8 +17,10 @@ import {
   DialogTitle,
   DialogTrigger
 } from '~/components/ui/dialog'
-import { useCreateTodoMutation } from '~/redux/features/todosApi'
-import { convertTo12Hour } from '~/utils/date/convertTo12hour'
+import { useUpdateTodoMutation } from '~/redux/features/todosApi'
+import { type WithId } from '~/types/common/Response'
+import { type Todo } from '~/types/Todo'
+import { convertTo12Hour, convertToTimeInputFormat } from '~/utils/date/convertTo12hour'
 import { rtkErrorMessage } from '~/utils/error/errorMessage'
 import { isObjEmpty } from '~/utils/misc/isEmpty'
 
@@ -31,7 +33,11 @@ export interface SingleTodoFormValues {
   time_range: string
 }
 
-export default function CreateSingleTodoForm() {
+interface Props {
+  todo: WithId<Todo>
+}
+
+export default function UpdateTodoModal({ todo }: Props) {
   const methods = useForm<SingleTodoFormValues>()
   const {
     handleSubmit,
@@ -39,9 +45,19 @@ export default function CreateSingleTodoForm() {
     formState: { errors }
   } = methods
 
+  useEffect(() => {
+    reset({
+      title: todo.title,
+      description: todo?.description,
+      time_range_from: convertToTimeInputFormat(todo.time_range.split(' - ')[0]!)!,
+      time_range_to: convertToTimeInputFormat(todo.time_range.split(' - ')[1]!)!,
+      priority: todo.priority
+    })
+  }, [todo, reset])
+
   const [open, setopen] = useState<boolean>(false)
 
-  const [createTodo, { isLoading, isSuccess, isError, error }] = useCreateTodoMutation()
+  const [updateTodo, { isLoading, isSuccess, isError, error }] = useUpdateTodoMutation()
 
   const onSubmit = (data: SingleTodoFormValues) => {
     if (isObjEmpty(errors)) {
@@ -58,14 +74,14 @@ export default function CreateSingleTodoForm() {
 
     const from = convertTo12Hour(data.time_range_from)
     const to = convertTo12Hour(data.time_range_to)
-    void createTodo({ ...data, time_range: `${from} - ${to}` })
+    void updateTodo({ id: todo.id, body: { ...data, time_range: `${from} - ${to}` } })
   }
 
   useEffect(() => {
-    if (isLoading) toast.loading('Creating todo...')
+    if (isLoading) toast.loading('Updating the todo...')
     if (isSuccess) {
       toast.dismiss()
-      toast.success('Todo created successfully!')
+      toast.success('Todo updated successfully!')
     }
 
     if (isError) {
@@ -77,16 +93,14 @@ export default function CreateSingleTodoForm() {
   return (
     <Dialog open={open} onOpenChange={setopen}>
       <DialogTrigger>
-        <Button icon={<ListPlus />} iconPosition='right'>
-          Add a Todo
-        </Button>
+        <PencilLineIcon className='text-sky-500' />
       </DialogTrigger>
       <DialogContent className='p-3.5'>
         <DialogHeader>
-          <DialogTitle>Add a todo for the day</DialogTitle>
+          <DialogTitle>Update a todo for the day</DialogTitle>
           <DialogDescription>
-            It will be added to the list of todos for the day at the end of all tasks. Later on you can update the order
-            by dragging the task
+            It will be updated to the list of todos for the day at the end of all tasks. Later on you can update the
+            order by dragging the task
           </DialogDescription>
         </DialogHeader>
 
@@ -124,8 +138,8 @@ export default function CreateSingleTodoForm() {
             </Select>
           </div>
 
-          <Button type='submit' icon={<ListPlus />} iconPosition='right'>
-            Add a Todo
+          <Button type='submit' icon={<PencilLineIcon />} iconPosition='right'>
+            Update Todo
           </Button>
         </Form>
       </DialogContent>
