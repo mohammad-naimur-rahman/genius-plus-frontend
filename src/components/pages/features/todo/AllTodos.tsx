@@ -10,6 +10,7 @@ import Typography from '~/components/ui/typography'
 import { type Response, type WithId } from '~/types/common/Response'
 import { type Todo } from '~/types/Todo'
 import { getUserData } from '~/utils/auth/getUserId'
+import { formatDate, oneDayAhead } from '~/utils/date/formatDate'
 import { isArrEmpty } from '~/utils/misc/isEmpty'
 
 interface Props {
@@ -24,9 +25,13 @@ export default function AllTodos({ date, isLoading, isSuccess, data }: Props) {
     <div className='mb-5'>
       <Typography variant='h4' className='mb-5 font-light'>
         {getUserData()?.name}&apos;s plan for{' '}
-        {date && format(new Date(date), 'MMMM d') === format(new Date(), 'MMMM d')
+        {date && formatDate(date) === formatDate(new Date())
           ? 'today'
-          : date && format(new Date(date), 'MMMM d')}
+          : date && formatDate(new Date(Date.now() - oneDayAhead)) === (date && formatDate(date))
+            ? 'yesterday'
+            : date && formatDate(new Date(Date.now() + oneDayAhead)) === (date && formatDate(date))
+              ? 'tomorrow'
+              : date && format(new Date(date), 'MMMM d')}
       </Typography>
       <TableSkeletons isLoading={isLoading} />
       {isSuccess ? (
@@ -62,10 +67,18 @@ export default function AllTodos({ date, isLoading, isSuccess, data }: Props) {
               ))}
             </TableBody>
           </Table>
+        ) : formatDate(new Date()) === (date && formatDate(date)) ||
+          formatDate(new Date(Date.now() + oneDayAhead)) === (date && formatDate(date)) ? (
+          <p className='italic text-muted-foreground'>
+            `There&apos;re no plans for {formatDate(new Date()) === (date && formatDate(date)) ? 'today' : 'tomorrrow'}{' '}
+            yet. Let&apos;s start with creatingone first or let&apos;s generate with AI`
+          </p>
         ) : (
           <p className='italic text-muted-foreground'>
-            There&apos;re no plans for today yet. Let&apos;s start with creating one first or let&apos;s generate with
-            AI
+            There&apos;re no plans for{' '}
+            {formatDate(new Date(Date.now() - oneDayAhead)) === (date && formatDate(date))
+              ? 'yesterday'
+              : date && format(date, 'MMMM d')}
           </p>
         )
       ) : null}

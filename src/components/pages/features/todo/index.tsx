@@ -41,6 +41,7 @@ export default function AITodo() {
 
             {isSuccess && data?.data.length && formatDate(new Date()) === (date && formatDate(date)) ? (
               <Button
+                variant='destructive'
                 icon={<Trash2 />}
                 iconPosition='right'
                 onClick={() => setopenPrompt(true)}
@@ -52,7 +53,7 @@ export default function AITodo() {
 
             {(isSuccess && !data?.data.length && formatDate(new Date()) === (date && formatDate(date))) ||
             formatDate(new Date(Date.now() + oneDayAhead)) === (date && formatDate(date)) ? (
-              <CreateTodoWithAIModal />
+              <CreateTodoWithAIModal date={date} />
             ) : null}
           </div>
         </div>

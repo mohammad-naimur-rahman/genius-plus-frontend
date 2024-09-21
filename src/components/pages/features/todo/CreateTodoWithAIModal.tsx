@@ -16,6 +16,7 @@ import {
   DialogTrigger
 } from '~/components/ui/dialog'
 import { useCreateTodoForADaywithAIMutation } from '~/redux/features/todosApi'
+import { formatDate, oneDayAhead } from '~/utils/date/formatDate'
 import { rtkErrorMessage } from '~/utils/error/errorMessage'
 import { isObjEmpty } from '~/utils/misc/isEmpty'
 
@@ -23,7 +24,11 @@ export interface TodoWithAIFormValues {
   text: string
 }
 
-export default function CreateTodoWithAIModal() {
+interface Props {
+  date: Date | undefined
+}
+
+export default function CreateTodoWithAIModal({ date }: Props) {
   const methods = useForm<TodoWithAIFormValues>()
   const {
     handleSubmit,
@@ -58,7 +63,12 @@ export default function CreateTodoWithAIModal() {
   return (
     <Dialog open={open} onOpenChange={setopen}>
       <DialogTrigger>
-        <Button icon={<Sparkles />}>Generate Today&apos;s Plan</Button>
+        <Button icon={<Sparkles />}>
+          {' '}
+          Generate{' '}
+          {date && formatDate(new Date(Date.now() + oneDayAhead)) === (date && formatDate(date)) ? 'tomorrow' : 'today'}
+          &apos;s Plan
+        </Button>
       </DialogTrigger>
       <DialogContent className='p-3.5'>
         <DialogHeader>
@@ -79,7 +89,11 @@ export default function CreateTodoWithAIModal() {
           <Textarea name='text' label="Today's plan" placeholder="Write about today's plan" required rows={5} />
           <div className='flex items-center justify-between gap-x-2'>
             <Button type='submit' icon={<Sparkles />}>
-              Generate Today&apos;s Plan
+              Generate{' '}
+              {date && formatDate(new Date(Date.now() + oneDayAhead)) === (date && formatDate(date))
+                ? 'tomorrow'
+                : 'today'}
+              &apos;s Plan
             </Button>
             <Button size='icon' variant='outline' className='rounded-full border-muted-foreground'>
               <Mic className='size-5' />
