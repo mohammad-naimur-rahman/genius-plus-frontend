@@ -1,4 +1,5 @@
 import { type SingleTodoFormValues } from '~/components/pages/features/todo/CreateSingleTodoForm'
+import { type TodoWithAIFormValues } from '~/components/pages/features/todo/CreateTodoWithAIModal'
 import { type Response, type WithId } from '~/types/common/Response'
 import { type Todo } from '~/types/Todo'
 import api from '../api'
@@ -15,7 +16,7 @@ const todosApi = api.injectEndpoints({
       }),
       invalidatesTags: ['todos', 'todo']
     }),
-    createTodoForADaywithAI: build.mutation<Response<WithId<Todo>>, { text: string }>({
+    createTodoForADaywithAI: build.mutation<Response<WithId<Todo>>, TodoWithAIFormValues>({
       query: body => ({
         url: `${rootApi}/create-with-ai`,
         method: 'POST',

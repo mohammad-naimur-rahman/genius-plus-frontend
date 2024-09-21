@@ -8,9 +8,12 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '~/comp
 import { useGetAllTodosQuery } from '~/redux/features/todosApi'
 import { isArrEmpty } from '~/utils/misc/isEmpty'
 
-export default function AllTodos() {
-  const { data, isLoading, isSuccess } = useGetAllTodosQuery({})
-  console.log(data)
+interface Props {
+  date: string | undefined
+}
+
+export default function AllTodos({ date }: Props) {
+  const { data, isLoading, isSuccess } = useGetAllTodosQuery({ date })
   return (
     <div className='mt-10'>
       <TableSkeletons isLoading={isLoading} className='mb-5' />
@@ -48,7 +51,7 @@ export default function AllTodos() {
             </TableBody>
           </Table>
         ) : (
-          <p className='italic text-muted-foreground'>
+          <p className='mb-5 italic text-muted-foreground'>
             There&apos;re no plans for today yet. Let&apos;s start with creating one first or let&apos;s generate with
             AI
           </p>

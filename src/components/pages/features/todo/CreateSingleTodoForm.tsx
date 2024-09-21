@@ -35,6 +35,7 @@ export default function CreateSingleTodoForm() {
   const methods = useForm<SingleTodoFormValues>()
   const {
     handleSubmit,
+    reset,
     formState: { errors }
   } = methods
 
@@ -51,6 +52,7 @@ export default function CreateSingleTodoForm() {
         toast.error('End time must be later than start time')
         return
       }
+      reset()
       setopen(false)
     }
 
