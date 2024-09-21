@@ -28,7 +28,7 @@ export default function ConfirmationPrompt({
         <DialogFooter className='mt-10 flex-row items-center justify-center gap-5 sm:justify-center'>
           <DialogClose>
             <Button
-              className='flex h-12 items-center gap-2 rounded-lg bg-emerald-500 px-8 transition-colors hover:bg-emerald-500/90'
+              className='flex h-10 items-center gap-2 rounded-lg bg-emerald-500 px-8 transition-colors hover:bg-emerald-500/90'
               isLoading={isLoading}
               onClick={cb}
             >
@@ -37,7 +37,7 @@ export default function ConfirmationPrompt({
           </DialogClose>
           <DialogClose>
             <Button
-              className='flex h-12 items-center gap-2 rounded-lg px-8'
+              className='flex h-10 items-center gap-2 rounded-lg px-8'
               variant='destructive'
               onClick={rejectionCb}
             >
