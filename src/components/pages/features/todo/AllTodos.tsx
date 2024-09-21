@@ -15,7 +15,7 @@ import { useDeleteTodoMutation } from '~/redux/features/todosApi'
 import { type Response, type WithId } from '~/types/common/Response'
 import { type Todo } from '~/types/Todo'
 import { getUserData } from '~/utils/auth/getUserId'
-import { formatDate, oneDayAhead } from '~/utils/date/formatDate'
+import { formatDate, isToday, isTomorrow, isYesterday } from '~/utils/date/formatDate'
 import { rtkErrorMessage } from '~/utils/error/errorMessage'
 import { isArrEmpty } from '~/utils/misc/isEmpty'
 import UpdateTodoModal from './UpdateTodoModal'
@@ -50,11 +50,11 @@ export default function AllTodos({ date, isLoading, isSuccess, data }: Props) {
       {isSuccess ? (
         <Typography variant='h4' className='mb-5 font-light'>
           {getUserData()?.name}&apos;s plan for{' '}
-          {date && formatDate(date) === formatDate(new Date())
+          {isToday(date!)
             ? 'today'
-            : date && formatDate(new Date(Date.now() - oneDayAhead)) === (date && formatDate(date))
+            : isYesterday(date!)
               ? 'yesterday'
-              : date && formatDate(new Date(Date.now() + oneDayAhead)) === (date && formatDate(date))
+              : isTomorrow(date!)
                 ? 'tomorrow'
                 : date && format(new Date(date), 'MMMM d')}
         </Typography>
@@ -100,22 +100,24 @@ export default function AllTodos({ date, isLoading, isSuccess, data }: Props) {
               ))}
             </TableBody>
           </Table>
-        ) : formatDate(new Date()) === (date && formatDate(date)) ||
-          formatDate(new Date(Date.now() + oneDayAhead)) === (date && formatDate(date)) ? (
+        ) : isToday(date!) || isTomorrow(date!) ? (
           <p className='italic text-muted-foreground'>
             There&apos;re no plans for {formatDate(new Date()) === (date && formatDate(date)) ? 'today' : 'tomorrrow'}{' '}
             yet. Let&apos;s start with creatingone first or let&apos;s generate with AI
           </p>
         ) : (
           <p className='italic text-muted-foreground'>
-            There&apos;re no plans for{' '}
-            {formatDate(new Date(Date.now() - oneDayAhead)) === (date && formatDate(date))
-              ? 'yesterday'
-              : date && format(date, 'MMMM d')}
+            There&apos;re no plans for {isYesterday(date!) ? 'yesterday' : date && format(date, 'MMMM d')}
           </p>
         )
       ) : null}
-      <ConfirmationPrompt open={openPrompt} onOpenChange={setopenPrompt} cb={() => deleteTodo(deleteId!)} />
+
+      <ConfirmationPrompt
+        title='Are you sure to delete this todo?'
+        open={openPrompt}
+        onOpenChange={setopenPrompt}
+        cb={() => deleteTodo(deleteId!)}
+      />
     </div>
   )
 }

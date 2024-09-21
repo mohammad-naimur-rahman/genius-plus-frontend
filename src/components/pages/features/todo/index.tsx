@@ -7,7 +7,7 @@ import ConfirmationPrompt from '~/components/reusable/dashboard/confirmation-pro
 import { Button } from '~/components/ui/button'
 import { Calendar } from '~/components/ui/calendar'
 import { useClearMyDaysTodoMutation, useGetAllTodosQuery } from '~/redux/features/todosApi'
-import { formatDate, oneDayAhead } from '~/utils/date/formatDate'
+import { formatDate, isToday, isTomorrow, oneDayAhead } from '~/utils/date/formatDate'
 import { rtkErrorMessage } from '~/utils/error/errorMessage'
 import AllTodos from './AllTodos'
 import CreateSingleTodoForm from './CreateSingleTodoForm'
@@ -33,13 +33,9 @@ export default function AITodo() {
           <AllTodos date={date} isLoading={isLoading} isSuccess={isSuccess} data={data!} />
 
           <div className='flex items-center gap-x-3'>
-            {isSuccess &&
-            (formatDate(new Date()) === (date && formatDate(date)) ||
-              formatDate(new Date(Date.now() + oneDayAhead)) === (date && formatDate(date))) ? (
-              <CreateSingleTodoForm />
-            ) : null}
+            {isSuccess && (isToday(date!) || isTomorrow(date!) ? <CreateSingleTodoForm /> : null)}
 
-            {isSuccess && data?.data.length && formatDate(new Date()) === (date && formatDate(date)) ? (
+            {isSuccess && data?.data.length && isToday(date!) ? (
               <Button
                 variant='destructive'
                 icon={<Trash2 />}
@@ -51,8 +47,7 @@ export default function AITodo() {
               </Button>
             ) : null}
 
-            {(isSuccess && !data?.data.length && formatDate(new Date()) === (date && formatDate(date))) ||
-            formatDate(new Date(Date.now() + oneDayAhead)) === (date && formatDate(date)) ? (
+            {(isSuccess && !data?.data.length && isToday(date!)) || isTomorrow(date!) ? (
               <CreateTodoWithAIModal date={date} />
             ) : null}
           </div>
