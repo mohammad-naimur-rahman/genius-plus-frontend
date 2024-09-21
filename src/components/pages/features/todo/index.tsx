@@ -22,8 +22,15 @@ export default function AITodo() {
     useClearMyDaysTodoMutation()
 
   useEffect(() => {
-    if (isDeleteSuccess) toast.success('Cleared my day successfully!')
-    if (isError) toast.error(rtkErrorMessage(error))
+    if (isDeleteLoading) toast.loading('Clearing my day...')
+    if (isDeleteSuccess) {
+      toast.dismiss()
+      toast.success('Cleared my day successfully!')
+    }
+    if (isError) {
+      toast.dismiss()
+      toast.error(rtkErrorMessage(error))
+    }
   }, [isDeleteLoading, isDeleteSuccess, isError, error])
 
   return (
