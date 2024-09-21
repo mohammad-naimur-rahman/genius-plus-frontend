@@ -33,9 +33,9 @@ export default function AITodo() {
           <AllTodos date={date} isLoading={isLoading} isSuccess={isSuccess} data={data!} />
 
           <div className='flex items-center gap-x-3'>
-            {isSuccess && (isToday(date!) || isTomorrow(date!) ? <CreateSingleTodoForm /> : null)}
+            {isSuccess && ((isToday(date) ?? isTomorrow(date)) ? <CreateSingleTodoForm /> : null)}
 
-            {isSuccess && data?.data.length && isToday(date!) ? (
+            {isSuccess && data?.data.length && isToday(date) ? (
               <Button
                 variant='destructive'
                 icon={<Trash2 />}
@@ -47,7 +47,7 @@ export default function AITodo() {
               </Button>
             ) : null}
 
-            {(isSuccess && !data?.data.length && isToday(date!)) || isTomorrow(date!) ? (
+            {((isSuccess && !data?.data.length && isToday(date)) ?? isTomorrow(date)) ? (
               <CreateTodoWithAIModal date={date} />
             ) : null}
           </div>
