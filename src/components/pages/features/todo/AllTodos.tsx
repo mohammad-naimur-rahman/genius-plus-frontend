@@ -3,7 +3,7 @@
 import { format } from 'date-fns'
 import { Forward, GripVertical, HelpCircle, Trash2 } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { DragDropContext, Draggable, Droppable, type DropResult, type OnDragEndResponder } from 'react-beautiful-dnd'
+import { DragDropContext, Draggable, Droppable, type OnDragEndResponder } from 'react-beautiful-dnd'
 import toast from 'react-hot-toast'
 import ConfirmationPrompt from '~/components/reusable/dashboard/confirmation-prompt'
 import { Checkbox } from '~/components/reusable/form/checkbox'
@@ -40,7 +40,6 @@ export default function AllTodos({ date, isLoading, isSuccess, data }: Props) {
 
   const [deleteId, setdeleteId] = useState<number | undefined>(undefined)
   const [openPrompt, setopenPrompt] = useState<boolean>(false)
-  const [reorderResult, setreorderResult] = useState<DropResult | undefined>(undefined)
 
   const [deleteTodo, { isSuccess: isDeleteSuccess, isError, error }] = useDeleteTodoMutation()
 
@@ -56,51 +55,37 @@ export default function AllTodos({ date, isLoading, isSuccess, data }: Props) {
 
   useEffect(() => {
     if (isUpdateSuccess) {
-      const successMsg =
-        formatDate(updatedTododata?.data.date as unknown as Date) !== formatDate(date!)
-          ? 'Todo forwarded to today'
-          : reorderResult?.destination?.index !== reorderResult?.source?.index
-            ? 'Rearranged the todos successfully!'
-            : updatedTododata?.data.is_complete
-              ? 'Todo marked as complete!'
-              : 'Todo marked as incomplete!'
-      toast.success(successMsg)
-      setreorderResult(undefined)
+      toast.success(updatedTododata.message)
     }
     if (isUpdateError) toast.error(rtkErrorMessage(updateError))
-  }, [isUpdateSuccess, isUpdateError, updateError, updatedTododata, reorderResult, date])
+  }, [isUpdateSuccess, isUpdateError, updateError, updatedTododata, date])
 
   const handleOnDragEnd: OnDragEndResponder = result => {
     if (!result.destination) return
-    setreorderResult(result)
+    const fromIndex = result.source.index
+    const toIndex = result.destination.index
 
-    const items = [...todos] // Create a shallow copy of todos array
-    const [reorderedItem] = items.splice(result.source.index, 1) // Remove the dragged item
+    // Clone the todos array to mutate
+    const updatedTodos = [...todos]
 
-    if (!reorderedItem) {
-      console.error('Reordered item is undefined')
-      return
-    }
+    // Get the todo being dragged
+    // first, change order of the target
+    const reorderedTodos = updatedTodos
+      .map((todo, idx) => {
+        if (fromIndex !== toIndex && todo.order === fromIndex) {
+          void updateTodo({ id: todo.id, body: { order: toIndex } })
+          return { ...todo, order: toIndex }
+        } else if (fromIndex > toIndex && todo.order >= toIndex && todo.order <= fromIndex) {
+          void updateTodo({ id: todo.id, body: { order: updatedTodos?.[idx + 1]?.order } })
+          return { ...todo, order: updatedTodos?.[idx + 1]?.order }
+        } else if (fromIndex < toIndex && todo.order <= toIndex && todo.order >= fromIndex) {
+          void updateTodo({ id: todo.id, body: { order: updatedTodos?.[idx - 1]?.order } })
+          return { ...todo, order: updatedTodos?.[idx - 1]?.order }
+        } else return todo
+      })
+      .sort((a, b) => a.order! - b.order!) as WithId<Todo>[]
 
-    items.splice(result.destination.index, 0, reorderedItem) // Insert the dragged item at the new position
-
-    setTodos(items) // Update state
-
-    // Prepare the todos that need to be updated in the backend
-    const updatedTodos = [
-      { id: reorderedItem?.id, order: result.destination.index },
-      ...items.map((todo, index) => ({ id: todo.id, order: index }))
-    ].filter(todo => todo.id !== undefined) // Ensure todos have valid IDs
-
-    // Log the updated todos
-    console.log('Updated todos to reorder:', updatedTodos)
-
-    // Update the backend for affected todos
-    updatedTodos.forEach(todo => {
-      if (todo.id !== undefined) {
-        void updateTodo({ id: todo.id, body: { order: todo.order } })
-      }
-    })
+    setTodos(reorderedTodos)
   }
 
   return (
@@ -134,7 +119,6 @@ export default function AllTodos({ date, isLoading, isSuccess, data }: Props) {
                 {provided => (
                   <TableBody ref={provided.innerRef} {...provided.droppableProps}>
                     {todos.map(todo => {
-                      console.log(todo.id.toString())
                       return (
                         <Draggable key={todo.id.toString()} draggableId={todo.id.toString()} index={todo.order}>
                           {provided => (
@@ -144,11 +128,11 @@ export default function AllTodos({ date, isLoading, isSuccess, data }: Props) {
                               ref={provided.innerRef}
                               {...provided.draggableProps}
                             >
-                              <TableCell>
-                                <span {...provided.dragHandleProps}>
-                                  <GripVertical className='cursor-grab' />
-                                </span>
-                              </TableCell>
+                              {(isToday(date) ?? isTomorrow(date)) && (
+                                <TableCell {...provided.dragHandleProps}>
+                                  <GripVertical className='text-muted-secondary cursor-grab' />
+                                </TableCell>
+                              )}
                               {isToday(date) && (
                                 <TableCell>
                                   <Checkbox
@@ -162,7 +146,7 @@ export default function AllTodos({ date, isLoading, isSuccess, data }: Props) {
                               )}
 
                               <TableCell className='flex items-center gap-x-1'>
-                                {todo.title}
+                                {todo.title} ({todo.order})
                                 {todo.description && (
                                   <TooltipProvider>
                                     <Tooltip>
