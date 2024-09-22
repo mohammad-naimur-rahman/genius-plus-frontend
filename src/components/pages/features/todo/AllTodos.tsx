@@ -19,6 +19,7 @@ import { formatDate, isToday, isTomorrow, isYesterday } from '~/utils/date/forma
 import { rtkErrorMessage } from '~/utils/error/errorMessage'
 import { isArrEmpty } from '~/utils/misc/isEmpty'
 import UpdateTodoModal from './UpdateTodoModal'
+import { cn } from '~/lib/utils'
 
 interface Props {
   date: Date | undefined
@@ -157,7 +158,7 @@ export default function AllTodos({ date, isLoading, isSuccess, data }: Props) {
                             <TableRow
                               ref={provided.innerRef}
                               {...provided.draggableProps}
-                              className={snapshot.isDragging ? 'opacity-0' : ''}
+                              className={cn('relative', { 'opacity-0': snapshot.isDragging })}
                             >
                               <TableCell {...provided.dragHandleProps}>
                                 <GripVertical className='cursor-grab text-secondary-foreground' />
