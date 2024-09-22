@@ -1,8 +1,6 @@
-'use client'
-
+import React, { useEffect, useState } from 'react'
 import { format } from 'date-fns'
 import { Forward, GripVertical, HelpCircle, Trash2 } from 'lucide-react'
-import { useEffect, useState } from 'react'
 import { DragDropContext, Draggable, Droppable, type OnDragEndResponder } from 'react-beautiful-dnd'
 import toast from 'react-hot-toast'
 import ConfirmationPrompt from '~/components/reusable/dashboard/confirmation-prompt'
@@ -28,6 +26,45 @@ interface Props {
   isSuccess: boolean
   data: Response<WithId<Todo>[]>
 }
+
+const DragPreview = ({
+  todo,
+  style,
+  date
+}: {
+  todo: WithId<Todo>
+  style: React.CSSProperties
+  date: Date | undefined
+}) => (
+  <div style={{ ...style, display: 'table', tableLayout: 'fixed', maxWidth: '100%' }}>
+    <Table>
+      <TableBody>
+        <TableRow className='bg-background shadow-md'>
+          <TableCell>
+            <GripVertical className='cursor-grab text-secondary-foreground' />
+          </TableCell>
+          {isToday(date) && (
+            <TableCell>
+              <Checkbox checked={todo.is_complete} disabled />
+            </TableCell>
+          )}
+          <TableCell>
+            {todo.title} ({todo.order})
+          </TableCell>
+          <TableCell>{todo.time_range}</TableCell>
+          <TableCell>{todo.priority}</TableCell>
+          <TableCell>
+            <TableActions>
+              <UpdateTodoModal todo={todo} />
+              <Trash2 className='text-destructive' />
+              {!isToday(date) && !isTomorrow(date) && !todo.is_complete && <Forward className='text-emerald-500' />}
+            </TableActions>
+          </TableCell>
+        </TableRow>
+      </TableBody>
+    </Table>
+  </div>
+)
 
 export default function AllTodos({ date, isLoading, isSuccess, data }: Props) {
   const [todos, setTodos] = useState<WithId<Todo>[]>([])
@@ -63,11 +100,8 @@ export default function AllTodos({ date, isLoading, isSuccess, data }: Props) {
     const fromIndex = result.source.index
     const toIndex = result.destination.index
 
-    // Clone the todos array to mutate
     const updatedTodos = [...todos]
 
-    // Get the todo being dragged
-    // first, change order of the target
     const reorderedTodos = updatedTodos
       .map((todo, idx) => {
         if (fromIndex !== toIndex && todo.order === fromIndex) {
@@ -111,26 +145,23 @@ export default function AllTodos({ date, isLoading, isSuccess, data }: Props) {
       <TableSkeletons isLoading={isLoading} />
       {isSuccess ? (
         !isArrEmpty(todos) ? (
-          <Table>
-            <DragDropContext onDragEnd={handleOnDragEnd}>
+          <DragDropContext onDragEnd={handleOnDragEnd}>
+            <Table>
               <Droppable droppableId='todos'>
                 {provided => (
-                  <TableBody ref={provided.innerRef} {...provided.droppableProps}>
-                    {todos.map(todo => {
-                      return (
-                        <Draggable key={todo.id.toString()} draggableId={todo.id.toString()} index={todo.order}>
-                          {provided => (
+                  <TableBody {...provided.droppableProps} ref={provided.innerRef}>
+                    {todos.map((todo, index) => (
+                      <Draggable key={todo.id.toString()} draggableId={todo.id.toString()} index={index}>
+                        {(provided, snapshot) => (
+                          <>
                             <TableRow
-                              key={todo.id.toString()}
-                              className='relative right-0 w-full'
                               ref={provided.innerRef}
                               {...provided.draggableProps}
+                              className={snapshot.isDragging ? 'opacity-0' : ''}
                             >
-                              {(isToday(date) ?? isTomorrow(date)) && (
-                                <TableCell {...provided.dragHandleProps}>
-                                  <GripVertical className='cursor-grab text-secondary-foreground' />
-                                </TableCell>
-                              )}
+                              <TableCell {...provided.dragHandleProps}>
+                                <GripVertical className='cursor-grab text-secondary-foreground' />
+                              </TableCell>
                               {isToday(date) && (
                                 <TableCell>
                                   <Checkbox
@@ -142,7 +173,6 @@ export default function AllTodos({ date, isLoading, isSuccess, data }: Props) {
                                   />
                                 </TableCell>
                               )}
-
                               <TableCell className='flex items-center gap-x-1'>
                                 {todo.title} ({todo.order})
                                 {todo.description && (
@@ -192,19 +222,22 @@ export default function AllTodos({ date, isLoading, isSuccess, data }: Props) {
                                 <div className='absolute left-0 top-1/2 h-px w-full -translate-y-1/2 bg-primary' />
                               )}
                             </TableRow>
-                          )}
-                        </Draggable>
-                      )
-                    })}
+                            {snapshot.isDragging && (
+                              <DragPreview todo={todo} style={provided.draggableProps.style!} date={date} />
+                            )}
+                          </>
+                        )}
+                      </Draggable>
+                    ))}
                     {provided.placeholder}
                   </TableBody>
                 )}
               </Droppable>
-            </DragDropContext>
-          </Table>
+            </Table>
+          </DragDropContext>
         ) : (isToday(date) ?? isTomorrow(date)) ? (
           <p className='italic text-muted-foreground'>
-            There&apos;re no plans for {isToday(date) ? 'today' : 'tomorrrow'} yet. Let&apos;s start with creatingone
+            There&apos;re no plans for {isToday(date) ? 'today' : 'tomorrow'} yet. Let&apos;s start with creating one
             first or let&apos;s generate with AI
           </p>
         ) : (
