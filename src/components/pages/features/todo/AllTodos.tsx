@@ -54,9 +54,7 @@ export default function AllTodos({ date, isLoading, isSuccess, data }: Props) {
   }, [isDeleteSuccess, isError, error])
 
   useEffect(() => {
-    if (isUpdateSuccess) {
-      toast.success(updatedTododata.message)
-    }
+    if (isUpdateSuccess) toast.success(updatedTododata.message)
     if (isUpdateError) toast.error(rtkErrorMessage(updateError))
   }, [isUpdateSuccess, isUpdateError, updateError, updatedTododata, date])
 
@@ -124,13 +122,13 @@ export default function AllTodos({ date, isLoading, isSuccess, data }: Props) {
                           {provided => (
                             <TableRow
                               key={todo.id.toString()}
-                              className='relative'
+                              className='relative right-0 w-full'
                               ref={provided.innerRef}
                               {...provided.draggableProps}
                             >
                               {(isToday(date) ?? isTomorrow(date)) && (
                                 <TableCell {...provided.dragHandleProps}>
-                                  <GripVertical className='text-muted-secondary cursor-grab' />
+                                  <GripVertical className='cursor-grab text-secondary-foreground' />
                                 </TableCell>
                               )}
                               {isToday(date) && (
