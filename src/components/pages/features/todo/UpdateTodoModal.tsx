@@ -95,7 +95,7 @@ export default function UpdateTodoModal({ todo }: Props) {
       <DialogTrigger>
         <PencilLineIcon className='text-sky-500' />
       </DialogTrigger>
-      <DialogContent className='p-3.5'>
+      <DialogContent className='p-4'>
         <DialogHeader>
           <DialogTitle>Update a todo for the day</DialogTitle>
           <DialogDescription>
