@@ -13,21 +13,19 @@ interface Props {
 }
 
 const DragPreview = ({ todo, style, date }: Props) => (
-  <div style={{ ...style, display: 'table', tableLayout: 'fixed', maxWidth: '100%' }}>
+  <div style={{ ...style, display: 'table', tableLayout: 'fixed', maxWidth: '100%' }} className='shadow-lg'>
     <Table>
       <TableBody>
-        <TableRow className='bg-background shadow-md'>
-          <TableCell>
-            <GripVertical className='cursor-grab text-secondary-foreground' />
+        <TableRow className='bg-muted/100 shadow-md'>
+          <TableCell className='max-w-6'>
+            <GripVertical className='cursor-grab text-sky-700' />
           </TableCell>
           {isToday(date) && (
             <TableCell className='w-6 max-w-6'>
               <Checkbox checked={todo.is_complete} disabled />
             </TableCell>
           )}
-          <TableCell>
-            {todo.title} ({todo.order})
-          </TableCell>
+          <TableCell>{todo.title}</TableCell>
           <TableCell>{todo.time_range}</TableCell>
           <TableCell>{todo.priority}</TableCell>
           <TableCell>

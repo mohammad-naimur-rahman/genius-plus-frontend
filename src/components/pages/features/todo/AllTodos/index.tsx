@@ -131,13 +131,13 @@ export default function AllTodos({ date, isLoading, isSuccess, data }: Props) {
                                 ref={provided.innerRef}
                                 {...provided.draggableProps}
                               >
-                                {(isToday(date) ?? isTomorrow(date)) && (
-                                  <TableCell {...provided.dragHandleProps}>
-                                    <GripVertical className='text-muted-secondary cursor-grab' />
+                                {(isToday(date) || isTomorrow(date)) && (
+                                  <TableCell {...provided.dragHandleProps} className='max-w-6'>
+                                    <GripVertical className='cursor-grab text-sky-700' />
                                   </TableCell>
                                 )}
                                 {isToday(date) && (
-                                  <TableCell>
+                                  <TableCell className='max-w-6'>
                                     <Checkbox
                                       className='mb-0.5'
                                       checked={todo.is_complete}
@@ -149,7 +149,7 @@ export default function AllTodos({ date, isLoading, isSuccess, data }: Props) {
                                 )}
 
                                 <TableCell className='flex items-center gap-x-1'>
-                                  {todo.title} ({todo.order})
+                                  {todo.title}
                                   {todo.description && (
                                     <TooltipProvider>
                                       <Tooltip>
@@ -211,7 +211,7 @@ export default function AllTodos({ date, isLoading, isSuccess, data }: Props) {
               </Droppable>
             </DragDropContext>
           </Table>
-        ) : (isToday(date) ?? isTomorrow(date)) ? (
+        ) : isToday(date) || isTomorrow(date) ? (
           <p className='italic text-muted-foreground'>
             There&apos;re no plans for {isToday(date) ? 'today' : 'tomorrrow'} yet. Let&apos;s start with creatingone
             first or let&apos;s generate with AI
