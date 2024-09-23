@@ -105,7 +105,7 @@ export default function UpdateTodoModal({ todo }: Props) {
         </DialogHeader>
 
         <Form methods={methods} onSubmit={handleSubmit(onSubmit)}>
-          <div className='my-3 flex flex-wrap gap-x-4'>
+          <div className='my-3 flex flex-wrap gap-x-3.5'>
             <Input
               name='title'
               label='Title'
