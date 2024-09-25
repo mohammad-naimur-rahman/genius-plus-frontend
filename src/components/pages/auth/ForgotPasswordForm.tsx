@@ -34,6 +34,7 @@ export default function ForgotPasswordForm() {
 
     if (isError) toast.error(rtkErrorMessage(error))
   }, [isSuccess, isError, error])
+
   return (
     <AuthWrapper heroImgSrc={heroImg}>
       {emailSent ? (
