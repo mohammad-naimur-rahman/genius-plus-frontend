@@ -22,7 +22,13 @@ export default function AllTemplates() {
 
   return (
     <>
-      <TableSearchSelector params={params} setparams={setparams} mode={mode} setmode={setmode} />
+      <TableSearchSelector
+        params={params}
+        setparams={setparams}
+        mode={mode}
+        setmode={setmode}
+        placeholder='Search templates by title...'
+      />
       <TodoTemplateCardSkeletons isLoading={isLoading} />
       {isSuccess ? (
         isArrEmpty(data?.data) ? (

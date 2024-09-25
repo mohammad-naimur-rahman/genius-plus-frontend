@@ -1,5 +1,5 @@
 import AllTemplates from '~/components/pages/features/todo/templates/AllTemplates'
-import CreateTemplateModal from '~/components/pages/features/todo/templates/createTemplateModal'
+import CreateTemplateModal from '~/components/pages/features/todo/templates/CreateTemplateModal'
 import DashboardHeading from '~/components/reusable/dashboard/dashboard-heading'
 import { genTitle } from '~/utils/misc/genTitle'
 
