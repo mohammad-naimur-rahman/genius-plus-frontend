@@ -77,10 +77,10 @@ export default function AllTemplates() {
               {data.data.map(template => (
                 <TableRow key={template.id}>
                   <TableCell className='font-medium'>{template.title}</TableCell>
-                  <TableCell className='one-liner-elipse max-w-64 text-muted-foreground'>
+                  <TableCell className='one-liner-ellipsis max-w-64 text-muted-foreground'>
                     {template.description}
                   </TableCell>
-                  <TableCell className='one-liner-elipse max-w-64 italic text-muted-foreground'>
+                  <TableCell className='one-liner-ellipsis max-w-64 italic text-muted-foreground'>
                     {template.instructions}
                   </TableCell>
                   <TableCell>

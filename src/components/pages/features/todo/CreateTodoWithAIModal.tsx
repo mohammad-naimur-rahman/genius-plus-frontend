@@ -20,6 +20,7 @@ import { useCreateTodoForADaywithAIMutation } from '~/redux/features/todosApi'
 import { formatDate, isTomorrow } from '~/utils/date/formatDate'
 import { rtkErrorMessage } from '~/utils/error/errorMessage'
 import { isObjEmpty } from '~/utils/misc/isEmpty'
+import ChooseTemplateForTodoSheet from './ChooseTemplateForTodoSheet'
 
 export interface TodoWithAIFormValues {
   text: string
@@ -40,6 +41,7 @@ export default function CreateTodoWithAIModal({ date }: Props) {
   } = methods
 
   const [open, setOpen] = useState<boolean>(false)
+  const [sheetOpen, setsheetOpen] = useState<boolean>(false)
 
   const [createTodo, { isLoading, isSuccess, isError, error }] = useCreateTodoForADaywithAIMutation()
 
@@ -71,8 +73,7 @@ export default function CreateTodoWithAIModal({ date }: Props) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>
-          <Sparkles className='mr-2 h-4 w-4' />
+        <Button icon={<Sparkles />}>
           Generate {isTomorrow(date) ? 'tomorrow' : 'today'}
           &apos;s Plan
         </Button>
@@ -85,8 +86,13 @@ export default function CreateTodoWithAIModal({ date }: Props) {
               <p className='text-justify text-muted-foreground'>
                 Describe your day by typing, using voice or choose a template to get started
               </p>
-              <Button className='mt-1 border' variant='secondary'>
-                <SquareDashedMousePointer className='mr-2 h-4 w-4' />
+              <ChooseTemplateForTodoSheet sheeetOpen={sheetOpen} setsheetOpen={setsheetOpen} setValue={setValue} />
+              <Button
+                className='mt-1 border'
+                variant='secondary'
+                icon={<SquareDashedMousePointer />}
+                onClick={() => setsheetOpen(true)}
+              >
                 Choose Template
               </Button>
             </div>
@@ -96,8 +102,7 @@ export default function CreateTodoWithAIModal({ date }: Props) {
         <Form methods={methods} onSubmit={handleSubmit(onSubmit)}>
           <Textarea name='text' label="Today's plan" placeholder="Write about today's plan" required rows={5} />
           <div className='flex items-center justify-between gap-x-2'>
-            <Button type='submit'>
-              <Sparkles className='mr-2 h-4 w-4' />
+            <Button type='submit' icon={<Sparkles />}>
               Generate {isTomorrow(date) ? 'tomorrow' : 'today'}
               &apos;s Plan
             </Button>

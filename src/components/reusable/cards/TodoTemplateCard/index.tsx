@@ -18,7 +18,7 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
   hidePopover?: boolean
 }
 
-export default function TodoTemplateCard({ template, hidePopover = false }: Props) {
+export default function TodoTemplateCard({ template, hidePopover = false, ...props }: Props) {
   const [openPrompt, setopenPrompt] = useState<boolean>(false)
   const [deleteTemplate, { isLoading, isSuccess, isError, error }] = useDeleteTodoTemplateMutation()
 
@@ -51,6 +51,7 @@ export default function TodoTemplateCard({ template, hidePopover = false }: Prop
           </CardPopover>
         )
       }
+      {...props}
     >
       <Typography variant='h4' className='mb-3 font-normal text-primary'>
         {template.title}

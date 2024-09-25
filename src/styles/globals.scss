@@ -67,15 +67,15 @@
   body {
     @apply bg-background;
   }
-
-  .one-liner-elipse {
-    @apply max-w-full overflow-hidden text-ellipsis whitespace-nowrap;
-  }
 }
 
 @layer utilities {
   .text-link {
     @apply text-sm font-medium text-blue-500 hover:underline;
+  }
+
+  .one-liner-ellipsis {
+    @apply overflow-hidden text-ellipsis whitespace-nowrap;
   }
 }
 
