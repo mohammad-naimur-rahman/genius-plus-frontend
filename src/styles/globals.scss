@@ -67,6 +67,10 @@
   body {
     @apply bg-background;
   }
+
+  .one-liner-elipse {
+    @apply max-w-full overflow-hidden text-ellipsis whitespace-nowrap;
+  }
 }
 
 @layer utilities {

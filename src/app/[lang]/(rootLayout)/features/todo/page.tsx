@@ -1,5 +1,6 @@
 import { BookDashed } from 'lucide-react'
 import AITodo from '~/components/pages/features/todo'
+import BackToFeatures from '~/components/reusable/common/BackToFeatures'
 import DashboardHeading from '~/components/reusable/dashboard/dashboard-heading'
 import { Button } from '~/components/ui/button'
 import Link from '~/components/ui/llink'
@@ -14,9 +15,12 @@ export default function TodoPage() {
       <DashboardHeading
         title='AI Todo Builder'
         extra={
-          <Link href='/features/todo/templates'>
-            <Button icon={<BookDashed />}>Manage Templates</Button>
-          </Link>
+          <>
+            <BackToFeatures />
+            <Link href='/features/todo/templates'>
+              <Button icon={<BookDashed />}>Manage Templates</Button>
+            </Link>
+          </>
         }
       />
       <AITodo />

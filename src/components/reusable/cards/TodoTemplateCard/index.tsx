@@ -19,7 +19,6 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
 }
 
 export default function TodoTemplateCard({ template, hidePopover = false }: Props) {
-  // Deleting template
   const [openPrompt, setopenPrompt] = useState<boolean>(false)
   const [deleteTemplate, { isLoading, isSuccess, isError, error }] = useDeleteTodoTemplateMutation()
 
