@@ -1,8 +1,9 @@
 'use client'
 
-import { PencilLine, Trash2 } from 'lucide-react'
+import { Eye, PencilLine, Trash2 } from 'lucide-react'
 import { useEffect, useState, type HTMLAttributes } from 'react'
 import toast from 'react-hot-toast'
+import ViewTemplateModal from '~/components/pages/features/todo/templates/ViewTemplateModal'
 import Typography from '~/components/ui/typography'
 import { useDeleteTodoTemplateMutation } from '~/redux/features/todoTemplatesApi'
 import { type WithId } from '~/types/common/Response'
@@ -40,6 +41,9 @@ export default function TodoTemplateCard({ template, hidePopover = false, ...pro
       popoverComp={
         !hidePopover && (
           <CardPopover>
+            <ViewTemplateModal template={template}>
+              <CardPopoverContent text='View' icon={<Eye className='size-5 text-secondary-foreground' />} />
+            </ViewTemplateModal>
             <UpdateTodoTemplateModal template={template}>
               <CardPopoverContent text='Edit' icon={<PencilLine className='text-sky-500' />} />
             </UpdateTodoTemplateModal>

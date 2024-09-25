@@ -79,7 +79,7 @@ export default function TablePagination({ meta, params, setparams, className }: 
   return (
     <div
       className={cn(
-        'mt-6 flex w-full flex-wrap items-center justify-between gap-2 bg-primary-foreground p-3',
+        'mt-6 flex w-full flex-wrap items-center justify-between gap-2 bg-primary-foreground px-3 py-2',
         className
       )}
     >

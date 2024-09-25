@@ -1,6 +1,6 @@
 'use client'
 
-import { PencilLineIcon, Trash2 } from 'lucide-react'
+import { Eye, PencilLineIcon, Trash2 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import CardGrid from '~/components/reusable/cards/commonn/card-grid'
@@ -18,6 +18,7 @@ import { useDeleteTodoTemplateMutation, useGetAllTodoTemplatessQuery } from '~/r
 import { type Params } from '~/types/common/Params'
 import { rtkErrorMessage } from '~/utils/error/errorMessage'
 import { isArrEmpty } from '~/utils/misc/isEmpty'
+import ViewTemplateModal from './ViewTemplateModal'
 
 export default function AllTemplates() {
   const [mode, setmode] = useState<TableMode>('grid')
@@ -74,17 +75,20 @@ export default function AllTemplates() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {data.data.map(template => (
+              {data?.data?.map(template => (
                 <TableRow key={template.id}>
-                  <TableCell className='font-medium'>{template.title}</TableCell>
-                  <TableCell className='one-liner-ellipsis max-w-64 text-muted-foreground'>
+                  <TableCell className='min-w-32 font-medium'>{template.title}</TableCell>
+                  <TableCell className='one-liner-ellipsis max-w-20 text-muted-foreground sm:max-w-64'>
                     {template.description}
                   </TableCell>
-                  <TableCell className='one-liner-ellipsis max-w-64 italic text-muted-foreground'>
+                  <TableCell className='one-liner-ellipsis max-w-20 italic text-muted-foreground sm:max-w-64'>
                     {template.instructions}
                   </TableCell>
                   <TableCell>
                     <TableActions>
+                      <ViewTemplateModal template={template}>
+                        <Eye className='size-5 text-secondary-foreground' />
+                      </ViewTemplateModal>
                       <UpdateTodoTemplateModal template={template}>
                         <PencilLineIcon className='size-5 text-sky-500' />
                       </UpdateTodoTemplateModal>
