@@ -1,6 +1,6 @@
 'use client'
 
-import { LogIn } from 'lucide-react'
+import { Lock, LogIn, Mail } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
@@ -51,8 +51,8 @@ export default function LoginForm() {
     <AuthWrapper heroImgSrc={heroImg}>
       <Form methods={methods} onSubmit={handleSubmit(data => login(data))} className='w-full max-w-sm'>
         <AuthHeading title='Login' description='Login with your account to get started' />
-        <Input name='email' type='email' label='Email' placeholder='Enter your email' required />
-        <Input name='password' type='password' label='Password' placeholder='********' required />
+        <Input name='email' type='email' label='Email' icon={<Mail />} placeholder='Enter your email' required />
+        <Input name='password' type='password' label='Password' icon={<Lock />} placeholder='********' required />
         <div className='mb- mb-4 flex items-center justify-between gap-x-3 gap-y-2'>
           <Checkbox
             label='Remember Me'

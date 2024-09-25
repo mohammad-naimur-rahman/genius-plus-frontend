@@ -1,6 +1,6 @@
 'use client'
 
-import { CircleCheck } from 'lucide-react'
+import { CircleCheck, Lock } from 'lucide-react'
 import { useSearchParams } from 'next/navigation'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
@@ -67,6 +67,7 @@ export default function ForgotResetPasswordForm() {
           type='password'
           label='Password'
           placeholder='********'
+          icon={<Lock />}
           required
           hookFormConfig={{ pattern: signupPasswordRegex }}
         />

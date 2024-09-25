@@ -1,6 +1,6 @@
 'use client'
 
-import { ChevronRight } from 'lucide-react'
+import { ChevronRight, Contact, Lock, Mail } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
@@ -57,13 +57,14 @@ export default function RegisterForm() {
       ) : (
         <Form methods={methods} onSubmit={handleSubmit(data => signup(data))} className='w-full max-w-sm'>
           <AuthHeading title='Signup' description='Get started with us for free.' />
-          <Input name='name' type='text' label='Name' placeholder='Enter your name' required />
-          <Input name='email' type='email' label='Email' placeholder='Enter your email' required />
+          <Input name='name' type='text' label='Name' icon={<Contact />} placeholder='Enter your name' required />
+          <Input name='email' type='email' label='Email' icon={<Mail />} placeholder='Enter your email' required />
           <Input
             name='password'
             type='password'
             label='Password'
             placeholder='********'
+            icon={<Lock />}
             required
             hookFormConfig={{ pattern: signupPasswordRegex }}
           />
