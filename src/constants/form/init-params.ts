@@ -1,4 +1,4 @@
-interface InitParams {
+export interface InitParams {
   limit?: number
   sortBy?: string
   sortOrder?: 'asc' | 'desc'

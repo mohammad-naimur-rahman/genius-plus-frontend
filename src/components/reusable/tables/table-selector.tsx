@@ -1,8 +1,7 @@
 'use client'
 
+import { GridIcon, ListIcon } from 'lucide-react'
 import { type Dispatch, type SetStateAction } from 'react'
-import GridIcon from '~/components/icons/GridIcon'
-import ListIcon from '~/components/icons/ListIcon'
 import { cn } from '~/lib/utils'
 
 export type TableMode = 'list' | 'grid'
@@ -18,15 +17,15 @@ export default function TableSelector({ onChange = () => {}, mode, setmode, clas
   return (
     <div className={cn('flex items-center gap-3', className)}>
       <GridIcon
-        className={cn('cursor-pointer text-text-gray-light', { 'text-text-primary': mode === 'grid' })}
+        className={cn('cursor-pointer text-secondary-foreground', { 'text-muted-foreground': mode === 'list' })}
         onClick={() => {
           setmode('grid')
           onChange('grid')
         }}
       />
       <ListIcon
-        className={cn('cursor-pointer text-text-gray-light', {
-          'text-text-primary': mode === 'list'
+        className={cn('cursor-pointer text-secondary-foreground', {
+          'text-muted-foreground': mode === 'grid'
         })}
         onClick={() => {
           setmode('list')

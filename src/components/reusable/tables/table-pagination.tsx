@@ -15,14 +15,18 @@ import { type Params } from '~/types/common/Params'
 import { type Metadata } from '~/types/common/Response'
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
-  metadata: Metadata
+  meta: Metadata | undefined
   params: Params
   setparams: Dispatch<SetStateAction<Params>>
   className?: string
 }
 
-export default function TablePagination({ metadata, params, setparams, className }: Props) {
-  const { totalDocuments, currentPage, totalPage } = { ...metadata }
+export default function TablePagination({ meta, params, setparams, className }: Props) {
+  if (!meta) return null
+
+  const { total, page, limit } = meta
+  const currentPage = page
+  const totalPage = Math.ceil(total / limit)
 
   const generatePageNumbers = () => {
     const pages = []
@@ -72,11 +76,15 @@ export default function TablePagination({ metadata, params, setparams, className
 
   const pageNumbers = generatePageNumbers()
 
-  return totalDocuments ? (
-    <div className={cn('mt-6 flex w-full flex-wrap items-center justify-between gap-2 bg-foreground p-3', className)}>
+  return (
+    <div
+      className={cn(
+        'mt-6 flex w-full flex-wrap items-center justify-between gap-2 bg-primary-foreground p-3',
+        className
+      )}
+    >
       <p className='text-sm font-medium'>
-        Showing {Math.max((currentPage - 1) * params.limit + 1, 1)} -{' '}
-        {Math.min(currentPage * params.limit, totalDocuments)} of {totalDocuments}
+        Showing {Math.max((currentPage - 1) * limit + 1, 1)} - {Math.min(currentPage * limit, total)} of {total}
       </p>
 
       <Pagination className='w-auto'>
@@ -112,5 +120,5 @@ export default function TablePagination({ metadata, params, setparams, className
         </PaginationContent>
       </Pagination>
     </div>
-  ) : null
+  )
 }

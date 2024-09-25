@@ -1,7 +1,7 @@
 'use client'
 
 import { SearchIcon } from 'lucide-react'
-import { InputHTMLAttributes, useEffect, useState } from 'react'
+import { type InputHTMLAttributes, useEffect, useState } from 'react'
 import useDebounce from '~/hooks/useDebounce'
 import { cn } from '~/lib/utils'
 
@@ -29,17 +29,17 @@ export default function Search({ searchValue, setsearchValue, inputClassName, cl
   }, [searchValue])
 
   return (
-    <div className={cn('relative h-10 w-full', className)}>
+    <div className={cn('relative h-9 w-full max-w-2xl', className)}>
       <input
         className={cn(
-          'flex h-full w-full rounded-full border border-foreground-border bg-foreground px-3 py-2 pl-16 pr-8 text-sm ring-offset-background file:border-0 file:bg-background file:text-sm file:font-medium placeholder:text-text-gray-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50',
+          'flex h-9 w-full rounded-full border border-input bg-transparent py-1 pl-10 pr-3 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50',
           inputClassName
         )}
         value={value}
         onChange={e => setValue(e.target.value)}
         {...props}
       />
-      <SearchIcon className='absolute left-8 top-1/2 -translate-y-1/2 text-text-gray-light' />
+      <SearchIcon className='absolute left-2.5 top-1/2 size-5 -translate-y-1/2 text-muted-foreground' />
     </div>
   )
 }

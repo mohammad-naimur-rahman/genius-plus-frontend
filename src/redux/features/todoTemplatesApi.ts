@@ -1,4 +1,5 @@
-import { type Response, type WithId } from '~/types/common/Response'
+import { type Params } from '~/types/common/Params'
+import { type Response, type ResponseWithMeta, type WithId } from '~/types/common/Response'
 import { type TodoTemplate } from '~/types/TodoTemplate'
 import api from '../api'
 
@@ -14,9 +15,10 @@ const todoTemplatesApi = api.injectEndpoints({
       }),
       invalidatesTags: ['todoTemplates', 'todo']
     }),
-    getAllTodoTemplatess: build.query<Response<WithId<TodoTemplate>[]>, void>({
-      query: () => ({
-        url: rootApi
+    getAllTodoTemplatess: build.query<ResponseWithMeta<WithId<TodoTemplate>[]>, Params>({
+      query: params => ({
+        url: rootApi,
+        params
       }),
       providesTags: ['todoTemplates']
     }),

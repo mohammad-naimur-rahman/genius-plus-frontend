@@ -5,7 +5,7 @@ export interface Response<T> {
 
 export interface ResponseWithMeta<T> {
   data: T
-  metadata: Metadata
+  meta: Metadata
   message: string
 }
 
@@ -21,9 +21,9 @@ export interface Tokens {
 }
 
 export interface Metadata {
-  currentPage: number
-  totalPage: number
-  totalDocuments: number
+  total: number
+  limit: number
+  page: number
 }
 
 export type WithId<T> = T & {
