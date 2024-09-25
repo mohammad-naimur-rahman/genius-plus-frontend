@@ -36,11 +36,11 @@ export default function AITodo() {
 
   return (
     <div className='pb-20'>
-      <div className='flex flex-col-reverse items-start gap-x-20 gap-y-10 lg:flex-row'>
-        <div className='w-full'>
+      <div className='flex flex-col-reverse items-start justify-start gap-x-20 gap-y-10 lg:flex-row'>
+        <div className='w-full max-w-3xl'>
           <AllTodos date={date} isLoading={isLoading} isSuccess={isSuccess} data={data!} />
 
-          <div className='flex items-center gap-x-3 gap-y-10'>
+          <div className='flex flex-wrap items-center gap-x-3 gap-y-2'>
             {(isToday(date) || isTomorrow(date)) && isSuccess ? <CreateSingleTodoForm date={date} /> : null}
 
             {(isToday(date) || isTomorrow(date)) && isSuccess && data?.data.length ? (
@@ -60,7 +60,7 @@ export default function AITodo() {
             ) : null}
           </div>
         </div>
-        <div>
+        <div className='w-auto'>
           <Typography variant='h4' className='mb-5 font-light'>
             Choose a date
           </Typography>

@@ -11,13 +11,10 @@ export default function CardWrapper({ children, className, popoverComp, ...props
   return (
     <div
       {...props}
-      className={cn(
-        'relative rounded-lg border bg-primary-foreground shadow-sm transition-all duration-300 hover:shadow-md',
-        className
-      )}
+      className='relative rounded-lg border bg-primary-foreground shadow-sm transition-all duration-300 hover:shadow-md'
     >
       {popoverComp && <div className='absolute right-2 top-2 z-10'>{popoverComp}</div>}
-      <div className='p-4'>{children}</div>
+      <div className={cn('w-full p-4', className)}>{children}</div>
     </div>
   )
 }
