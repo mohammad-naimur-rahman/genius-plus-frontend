@@ -8,19 +8,12 @@ import Form from '~/components/reusable/form/form'
 import { Input } from '~/components/reusable/form/input'
 import { Textarea } from '~/components/reusable/form/textarea'
 import { Button } from '~/components/ui/button'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger
-} from '~/components/ui/dialog'
 import { useUpdateTodoTemplateMutation } from '~/redux/features/todoTemplatesApi'
 import { type WithId } from '~/types/common/Response'
 import { type TodoTemplate } from '~/types/TodoTemplate'
 import { rtkErrorMessage } from '~/utils/error/errorMessage'
 import { isObjEmpty } from '~/utils/misc/isEmpty'
+import DrawerDialog from '../../common/DrawerDialog'
 
 interface Props {
   template: WithId<TodoTemplate>
@@ -69,17 +62,17 @@ export default function UpdateTodoTemplateModal({ template, children }: Props) {
     }
   }, [isLoading, isSuccess, isError, error])
   return (
-    <Dialog open={open} onOpenChange={setopen}>
-      <DialogTrigger>{children}</DialogTrigger>
-      <DialogContent className='p-3.5'>
-        <DialogHeader>
-          <DialogTitle>Update todo template</DialogTitle>
-          <DialogDescription>
-            Update your todo template. It can be later used for creating a day&apos;s todo easily. You can use it for
-            your usual/typical day
-          </DialogDescription>
-        </DialogHeader>
-
+    <>
+      <span onClick={() => setopen(true)} className='cursor-pointer'>
+        {children}
+      </span>
+      <DrawerDialog
+        title='Update todo template'
+        description="Update your todo template. It can be later used for creating a day's todo easily. You can use it for your usual/typical day"
+        open={open}
+        setopen={setopen}
+      >
+        {' '}
         <Form methods={methods} onSubmit={handleSubmit(onSubmit)}>
           <div className='my-3 flex flex-wrap gap-x-4'>
             <Input
@@ -110,7 +103,7 @@ export default function UpdateTodoTemplateModal({ template, children }: Props) {
             Update todo template
           </Button>
         </Form>
-      </DialogContent>
-    </Dialog>
+      </DrawerDialog>
+    </>
   )
 }

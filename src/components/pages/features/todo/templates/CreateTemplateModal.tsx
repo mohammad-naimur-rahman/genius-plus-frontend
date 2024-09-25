@@ -4,18 +4,11 @@ import { ListPlus } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
+import DrawerDialog from '~/components/reusable/common/DrawerDialog'
 import Form from '~/components/reusable/form/form'
 import { Input } from '~/components/reusable/form/input'
 import { Textarea } from '~/components/reusable/form/textarea'
 import { Button } from '~/components/ui/button'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger
-} from '~/components/ui/dialog'
 import { useCreateTodoTemplateMutation } from '~/redux/features/todoTemplatesApi'
 import { type TodoTemplate } from '~/types/TodoTemplate'
 import { rtkErrorMessage } from '~/utils/error/errorMessage'
@@ -56,20 +49,16 @@ export default function CreateTemplateModal() {
   }, [isLoading, isSuccess, isError, error])
 
   return (
-    <Dialog open={open} onOpenChange={setopen}>
-      <DialogTrigger>
-        <Button icon={<ListPlus />} iconPosition='right'>
-          Add a Todo Template
-        </Button>
-      </DialogTrigger>
-      <DialogContent className='p-3.5'>
-        <DialogHeader>
-          <DialogTitle>Add a todo template</DialogTitle>
-          <DialogDescription>
-            It can be later used for creating a day&apos;s todo easily. You can use it for your usual/typical day
-          </DialogDescription>
-        </DialogHeader>
-
+    <>
+      <Button icon={<ListPlus />} iconPosition='right' onClick={() => setopen(true)}>
+        Add a Todo Template
+      </Button>
+      <DrawerDialog
+        title='Add a todo template'
+        description="It can be later used for creating a day's todo easily. You can use it for your usual/typical day"
+        open={open}
+        setopen={setopen}
+      >
         <Form methods={methods} onSubmit={handleSubmit(onSubmit)}>
           <div className='my-3 flex flex-wrap gap-x-4'>
             <Input
@@ -100,7 +89,7 @@ export default function CreateTemplateModal() {
             Add a Todo Template
           </Button>
         </Form>
-      </DialogContent>
-    </Dialog>
+      </DrawerDialog>
+    </>
   )
 }
