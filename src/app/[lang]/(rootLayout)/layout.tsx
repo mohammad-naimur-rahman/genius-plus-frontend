@@ -10,8 +10,8 @@ interface Props {
 
 export default function layout({ children }: Props) {
   const cookiesStore = cookies()
-  const accessToken = cookiesStore.get('accessToken')?.value
-  const isAuth = !!accessToken
+  const refreshToken = cookiesStore.get('refreshToken')?.value
+  const isAuth = !!refreshToken
   if (!isAuth) {
     redirect('/login')
   }
@@ -21,7 +21,7 @@ export default function layout({ children }: Props) {
         <Logo />
         <ThemeSwitcher />
       </nav>
-      {children}
+      <main className='container'>{children}</main>
     </div>
   )
 }

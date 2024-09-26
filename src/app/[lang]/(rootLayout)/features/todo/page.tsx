@@ -11,7 +11,7 @@ export const metadata = {
 }
 export default function TodoPage() {
   return (
-    <div className='container'>
+    <>
       <DashboardHeading
         title='AI Todo Builder'
         extra={
@@ -24,6 +24,6 @@ export default function TodoPage() {
         }
       />
       <AITodo />
-    </div>
+    </>
   )
 }

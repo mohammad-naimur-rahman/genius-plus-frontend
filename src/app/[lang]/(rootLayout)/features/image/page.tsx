@@ -11,7 +11,7 @@ export const metadata = {
 
 export default function ImagePage() {
   return (
-    <div className='container'>
+    <>
       <DashboardHeading
         title='AI Image Generator'
         extra={
@@ -25,6 +25,6 @@ export default function ImagePage() {
           </>
         }
       />
-    </div>
+    </>
   )
 }

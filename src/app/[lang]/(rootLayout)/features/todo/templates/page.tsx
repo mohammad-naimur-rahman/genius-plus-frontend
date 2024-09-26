@@ -10,7 +10,7 @@ export const metadata = {
 
 export default function Templates() {
   return (
-    <div className='container'>
+    <>
       <DashboardHeading
         title='Todo templates'
         extra={
@@ -21,6 +21,6 @@ export default function Templates() {
         }
       />
       <AllTemplates />
-    </div>
+    </>
   )
 }
