@@ -4,11 +4,16 @@ import { ChevronLeft } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { Button } from '~/components/ui/button'
 
-export default function BackLink({ className }: { className?: string }) {
+interface Props {
+  className?: string
+  children?: string
+}
+
+export default function BackLink({ className, children }: Props) {
   const router = useRouter()
   return (
     <Button variant='outline' icon={<ChevronLeft />} onClick={() => router.back()} className={className}>
-      Go Back
+      {children || 'Go Back'}
     </Button>
   )
 }

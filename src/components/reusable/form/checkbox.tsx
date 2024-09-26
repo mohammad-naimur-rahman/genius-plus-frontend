@@ -22,6 +22,8 @@ const Checkbox = React.forwardRef<
 >(({ className, label, labelClassName, name, containerClassName, onCheckedChange, id, ...props }, ref) => {
   const formContext = useFormContext<UseFormReturn>()
 
+  React.useEffect(() => {}, [])
+
   const handleCheckedChange = (checked: boolean | 'indeterminate') => {
     if (onCheckedChange) {
       onCheckedChange(checked)

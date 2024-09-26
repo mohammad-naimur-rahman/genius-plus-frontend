@@ -14,6 +14,7 @@ import { type TodoTemplate } from '~/types/TodoTemplate'
 import { rtkErrorMessage } from '~/utils/error/errorMessage'
 import { isObjEmpty } from '~/utils/misc/isEmpty'
 import DrawerDialog from '../../common/DrawerDialog'
+import { SpeechRecorder } from '../../common/SpeechRecordert'
 
 interface Props {
   template: WithId<TodoTemplate>
@@ -26,6 +27,7 @@ export default function UpdateTodoTemplateModal({ template, children }: Props) {
   const {
     handleSubmit,
     reset,
+    setValue,
     formState: { errors }
   } = methods
 
@@ -47,6 +49,10 @@ export default function UpdateTodoTemplateModal({ template, children }: Props) {
       id: template.id,
       body: data
     })
+  }
+
+  const handleTranscriptChange = (transcript: string) => {
+    setValue('instructions', transcript, { shouldValidate: true })
   }
 
   useEffect(() => {
@@ -99,9 +105,13 @@ export default function UpdateTodoTemplateModal({ template, children }: Props) {
             />
           </div>
 
-          <Button type='submit' icon={<PencilLine />}>
-            Update todo template
-          </Button>
+          <div className='flex items-center justify-between gap-x-3'>
+            <Button type='submit' icon={<PencilLine />}>
+              Update todo template
+            </Button>
+
+            <SpeechRecorder onTranscriptChange={handleTranscriptChange} />
+          </div>
         </Form>
       </DrawerDialog>
     </>

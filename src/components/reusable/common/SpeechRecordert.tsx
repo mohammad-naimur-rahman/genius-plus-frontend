@@ -22,6 +22,10 @@ interface SpeechRecorderProps {
  * @return {JSX.Element} The speech recorder component.
  *
  * @example
+ * const handleTranscriptChange = (transcript: string) => {
+ *   setValue('text', transcript, { shouldValidate: true })
+ * }
+ *
  * <SpeechRecorder
  *   onTranscriptChange={handleTranscriptChange}
  *   MicIcon={<CustomMicIcon />}

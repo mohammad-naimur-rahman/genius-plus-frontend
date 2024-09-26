@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import DrawerDialog from '~/components/reusable/common/DrawerDialog'
+import { SpeechRecorder } from '~/components/reusable/common/SpeechRecordert'
 import Form from '~/components/reusable/form/form'
 import { Input } from '~/components/reusable/form/input'
 import { Textarea } from '~/components/reusable/form/textarea'
@@ -19,6 +20,7 @@ export default function CreateTemplateModal() {
   const {
     handleSubmit,
     reset,
+    setValue,
     formState: { errors }
   } = methods
 
@@ -33,6 +35,10 @@ export default function CreateTemplateModal() {
     }
 
     void createTodoTemplate(data)
+  }
+
+  const handleTranscriptChange = (transcript: string) => {
+    setValue('instructions', transcript, { shouldValidate: true })
   }
 
   useEffect(() => {
@@ -85,9 +91,13 @@ export default function CreateTemplateModal() {
             />
           </div>
 
-          <Button type='submit' icon={<ListPlus />} iconPosition='right'>
-            Add a Todo Template
-          </Button>
+          <div className='flex items-center justify-between gap-x-3'>
+            <Button type='submit' icon={<ListPlus />} iconPosition='right'>
+              Add a Todo Template
+            </Button>
+
+            <SpeechRecorder onTranscriptChange={handleTranscriptChange} />
+          </div>
         </Form>
       </DrawerDialog>
     </>
