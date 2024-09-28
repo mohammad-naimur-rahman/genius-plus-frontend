@@ -1,14 +1,16 @@
 'use client'
 
-import { Download, Fullscreen, PencilLine, Trash2 } from 'lucide-react'
+import { Download, Fullscreen, Trash2 } from 'lucide-react'
 import { useState } from 'react'
 import { Button } from '~/components/ui/button'
 import { Img } from '~/components/ui/img'
 import LightBox from '~/components/ui/lightbox'
+import { type WithId } from '~/types/common/Response'
 import { type ImageInterface } from '~/types/ImageInterface'
+import UpdateImageModal from './UpdateImageModal'
 
 interface Props {
-  img: ImageInterface
+  img: WithId<ImageInterface>
 }
 
 export default function ImageCard({ img }: Props) {
@@ -38,9 +40,7 @@ export default function ImageCard({ img }: Props) {
           <Button onClick={() => setopenLightbox(true)} variant='outline'>
             <Fullscreen className='size-[18px]' />
           </Button>
-          <Button variant='secondary'>
-            <PencilLine className='size-[18px]' />
-          </Button>
+          <UpdateImageModal img={img} />
           <Button variant='destructive'>
             <Trash2 className='size-[18px]' />
           </Button>
