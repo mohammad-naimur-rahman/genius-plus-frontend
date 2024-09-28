@@ -1,12 +1,16 @@
 'use client'
 
 import { Download, Fullscreen, Trash2 } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import toast from 'react-hot-toast'
 import { Button } from '~/components/ui/button'
 import { Img } from '~/components/ui/img'
 import LightBox from '~/components/ui/lightbox'
+import { useDeleteImagesMutation } from '~/redux/features/imagesApi'
 import { type WithId } from '~/types/common/Response'
 import { type ImageInterface } from '~/types/ImageInterface'
+import { rtkErrorMessage } from '~/utils/error/errorMessage'
+import ConfirmationPrompt from '../../dashboard/confirmation-prompt'
 import UpdateImageModal from './UpdateImageModal'
 
 interface Props {
@@ -15,6 +19,21 @@ interface Props {
 
 export default function ImageCard({ img }: Props) {
   const [openLightbox, setopenLightbox] = useState<boolean>(false)
+  const [openPrompt, setopenPrompt] = useState<boolean>(false)
+
+  const [deleteImg, { isSuccess, isError, error }] = useDeleteImagesMutation()
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.dismiss()
+      toast.success('Image deleted successfully')
+    }
+    if (isError) {
+      toast.dismiss()
+      toast.error(rtkErrorMessage(error))
+    }
+  }, [isSuccess, isError, error])
+
   return (
     <>
       <div className='w-full'>
@@ -41,12 +60,21 @@ export default function ImageCard({ img }: Props) {
             <Fullscreen className='size-[18px]' />
           </Button>
           <UpdateImageModal img={img} />
-          <Button variant='destructive'>
+          <Button variant='destructive' onClick={() => setopenPrompt(true)}>
             <Trash2 className='size-[18px]' />
           </Button>
         </div>
       </div>
       <LightBox open={openLightbox} onOpenChange={setopenLightbox} src={img.url} />
+      <ConfirmationPrompt
+        open={openPrompt}
+        onOpenChange={setopenPrompt}
+        cb={() => {
+          toast.loading('Deleting image...')
+          void deleteImg(img.id)
+        }}
+        title='Are you sure to delete this image?'
+      />
     </>
   )
 }

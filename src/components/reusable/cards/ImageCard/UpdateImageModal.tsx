@@ -41,12 +41,19 @@ export default function UpdateImageModal({ img }: Props) {
     }
 
     setopen(false)
+    toast.loading('Updating image...')
     void updateImg({ id: img.id, body: data })
   }
 
   useEffect(() => {
-    if (isSuccess) toast.success('Image updated successfully')
-    if (isError) toast.error(rtkErrorMessage(error))
+    if (isSuccess) {
+      toast.dismiss()
+      toast.success('Image updated successfully')
+    }
+    if (isError) {
+      toast.dismiss()
+      toast.error(rtkErrorMessage(error))
+    }
   }, [isSuccess, isError, error])
 
   return (
