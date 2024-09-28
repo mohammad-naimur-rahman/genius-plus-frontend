@@ -1,32 +1,25 @@
 'use client'
 
 import { SearchIcon } from 'lucide-react'
-import { type InputHTMLAttributes, useEffect, useState } from 'react'
+import { type Dispatch, type InputHTMLAttributes, type SetStateAction, useEffect, useState } from 'react'
 import useDebounce from '~/hooks/useDebounce'
 import { cn } from '~/lib/utils'
+import { type Params } from '~/types/common/Params'
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
   className?: string
-  searchValue: string
-  setsearchValue: (value: string) => void
+  params: Params
+  setparams: Dispatch<SetStateAction<Params>>
   inputClassName?: string
 }
 
-export default function Search({ searchValue, setsearchValue, inputClassName, className, ...props }: Props) {
-  const [value, setValue] = useState(searchValue)
-  const debouncedSearch = useDebounce(value, 500)
+export default function Search({ params, setparams, inputClassName, className, ...props }: Props) {
+  const [value, setValue] = useState(params.search || '')
+  const debouncedSearch = useDebounce(value, 750)
 
   useEffect(() => {
-    if (debouncedSearch !== searchValue) {
-      setsearchValue(debouncedSearch)
-    }
-  }, [debouncedSearch, searchValue, setsearchValue])
-
-  useEffect(() => {
-    if (searchValue === '') {
-      setValue('')
-    }
-  }, [searchValue])
+    setparams(prev => ({ ...prev, search: debouncedSearch }))
+  }, [debouncedSearch, setparams])
 
   return (
     <div className={cn('relative h-9 w-full max-w-2xl', className)}>

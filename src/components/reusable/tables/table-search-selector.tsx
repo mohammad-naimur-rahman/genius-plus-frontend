@@ -31,8 +31,8 @@ export default function TableSearchSelector({
       {...props}
     >
       <Search
-        searchValue={params.search}
-        setsearchValue={val => setparams({ ...params, search: val })}
+        params={params}
+        setparams={setparams}
         className='w-full sm:w-[calc(100%-100px)]'
         placeholder={placeholder ?? 'Search'}
       />

@@ -1,4 +1,5 @@
 import { ImagePlus } from 'lucide-react'
+import AllImages from '~/components/pages/features/image/AllImages'
 import BackToFeatures from '~/components/reusable/common/BackToFeatures'
 import DashboardHeading from '~/components/reusable/dashboard/dashboard-heading'
 import { Button } from '~/components/ui/button'
@@ -25,6 +26,8 @@ export default function ImagePage() {
           </>
         }
       />
+
+      <AllImages />
     </>
   )
 }

@@ -1,6 +1,6 @@
 'use client'
 
-import { type Dispatch, type SetStateAction, useState } from 'react'
+import { useState, type Dispatch, type SetStateAction } from 'react'
 import { type UseFormSetValue } from 'react-hook-form'
 import TodoTemplateCard from '~/components/reusable/cards/TodoTemplateCard'
 import Search from '~/components/reusable/tables/search'
@@ -18,8 +18,7 @@ interface Props {
 }
 
 export default function ChooseTemplateForTodoSheet({ sheeetOpen, setsheetOpen, setValue }: Props) {
-  const [search, setsearch] = useState<string>('')
-  const params: Params = { ...initParams({}), search }
+  const [params, setparams] = useState<Params>(initParams({}))
 
   const { data, isSuccess, isLoading } = useGetAllTodoTemplatessQuery(params)
 
@@ -36,12 +35,7 @@ export default function ChooseTemplateForTodoSheet({ sheeetOpen, setsheetOpen, s
           <SheetDescription>Choose a tempalte to save time for creating todo list for your day</SheetDescription>
         </SheetHeader>
 
-        <Search
-          searchValue={search}
-          setsearchValue={setsearch}
-          placeholder='Search templates by search'
-          className='mt-5'
-        />
+        <Search params={params} setparams={setparams} placeholder='Search templates by search' className='mt-5' />
 
         {isLoading && (
           <div className='mt-6 flex flex-col gap-y-5'>

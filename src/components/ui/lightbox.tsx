@@ -45,7 +45,7 @@ const LightBox = ({ open, onOpenChange, src }: Props) => {
           className={cn(
             { hidden: !open },
             styles.lightbox,
-            'w-100 fixed inset-0 z-50 h-screen bg-background bg-opacity-80'
+            'w-100 fixed inset-0 z-50 h-screen bg-background/40 bg-opacity-80 backdrop-blur-md'
           )}
         >
           <div className='absolute right-2 top-2 flex items-center justify-center lg:right-6 lg:top-6'>
