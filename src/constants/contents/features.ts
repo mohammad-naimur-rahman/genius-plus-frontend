@@ -71,7 +71,7 @@ export const features = [
   },
   {
     id: 8,
-    title: 'AI Text to Image',
+    title: 'Image to text',
     description: 'Coming soon...',
     href: '/features/text-to-image',
     icon: textToImage
