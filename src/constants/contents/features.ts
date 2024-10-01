@@ -28,25 +28,26 @@ export const features = [
   },
   {
     id: 2,
+    title: 'AI Image Generator',
+    description: 'Generate images with AI and use in your projects.',
+    href: '/features/image',
+    icon: aiImage
+  },
+  {
+    id: 3,
     title: 'AI Tutor',
     description: 'Coming soon...',
     href: '/features/tutor',
     icon: aiTutor
   },
   {
-    id: 3,
+    id: 4,
     title: 'AI Voice Generator',
     description: 'Coming soon...',
     href: '/features/voice',
     icon: aiVoice
   },
-  {
-    id: 4,
-    title: 'AI Image Generator',
-    description: 'Coming soon...',
-    href: '/features/image',
-    icon: aiImage
-  },
+
   {
     id: 5,
     title: 'AI Notes',
@@ -70,7 +71,7 @@ export const features = [
   },
   {
     id: 8,
-    title: 'AI Text to Image',
+    title: 'Image to text',
     description: 'Coming soon...',
     href: '/features/text-to-image',
     icon: textToImage

@@ -12,6 +12,9 @@ const config = {
       fullUrl: true
     }
   },
+  images: {
+    domains: ['res.cloudinary.com']
+  },
   eslint: {
     // This will ignore the ESLint check during builds. As I've set up Husky to run ESLint before, it's not necessary to run it again during builds and it will save some time during builds.
     ignoreDuringBuilds: true

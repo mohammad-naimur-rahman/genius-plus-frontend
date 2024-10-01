@@ -1,5 +1,9 @@
+import { BookDashed } from 'lucide-react'
 import AITodo from '~/components/pages/features/todo'
-import Typography from '~/components/ui/typography'
+import BackToFeatures from '~/components/reusable/common/BackToFeatures'
+import DashboardHeading from '~/components/reusable/dashboard/dashboard-heading'
+import { Button } from '~/components/ui/button'
+import Link from '~/components/ui/llink'
 import { genTitle } from '~/utils/misc/genTitle'
 
 export const metadata = {
@@ -7,11 +11,19 @@ export const metadata = {
 }
 export default function TodoPage() {
   return (
-    <div className='container'>
-      <Typography variant='h2' className='mb-6'>
-        AI Todo Builder
-      </Typography>
+    <>
+      <DashboardHeading
+        title='AI Todo Builder'
+        extra={
+          <>
+            <BackToFeatures />
+            <Link href='/features/todo/templates'>
+              <Button icon={<BookDashed />}>Manage Templates</Button>
+            </Link>
+          </>
+        }
+      />
       <AITodo />
-    </div>
+    </>
   )
 }

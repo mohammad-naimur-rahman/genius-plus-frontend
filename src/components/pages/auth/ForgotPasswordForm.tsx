@@ -1,6 +1,6 @@
 'use client'
 
-import { ChevronRight } from 'lucide-react'
+import { Mail, Send } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
@@ -34,6 +34,7 @@ export default function ForgotPasswordForm() {
 
     if (isError) toast.error(rtkErrorMessage(error))
   }, [isSuccess, isError, error])
+
   return (
     <AuthWrapper heroImgSrc={heroImg}>
       {emailSent ? (
@@ -48,8 +49,8 @@ export default function ForgotPasswordForm() {
       ) : (
         <Form methods={methods} onSubmit={handleSubmit(data => sendVerificationLink(data))} className='w-full max-w-sm'>
           <AuthHeading title='Forgot password?' description='Enter your email to reset your password.' />
-          <Input name='email' type='email' label='Email' placeholder='Enter your email' required />
-          <Button type='submit' icon={<ChevronRight />} iconPosition='right' isLoading={isLoading}>
+          <Input name='email' type='email' label='Email' icon={<Mail />} placeholder='Enter your email' required />
+          <Button type='submit' icon={<Send />} iconPosition='right' isLoading={isLoading}>
             Send verification link
           </Button>
         </Form>

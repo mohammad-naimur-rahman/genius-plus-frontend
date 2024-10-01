@@ -1,8 +1,5 @@
-import logoDark from '~/assets/logos/logo-dark.png'
-import logo from '~/assets/logos/logo.png'
 import Logo from '~/components/common/Logo'
 import Typography from '~/components/ui/typography'
-import { useLogo } from '~/hooks/useLogo'
 
 interface Props {
   title: string
@@ -10,7 +7,6 @@ interface Props {
 }
 
 export default function AuthHeading({ title, description }: Props) {
-  const logoSrc = useLogo(logo, logoDark)
   return (
     <>
       <Logo />

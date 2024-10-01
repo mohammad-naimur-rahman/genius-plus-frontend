@@ -8,7 +8,7 @@ export const metadata = {
 
 export default function FeaturesPage() {
   return (
-    <div className='container pt-10'>
+    <div className='pt-10'>
       <FeaturesHeading />
       <AllFeatures />
     </div>

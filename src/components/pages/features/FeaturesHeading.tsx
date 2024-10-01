@@ -7,7 +7,7 @@ export default function FeaturesHeading() {
   return (
     <div>
       <Typography variant='h1' className='mb-10'>
-        {`Welcome back, ${getUserData?.name}`}
+        {`Welcome back, ${getUserData()?.name}`}
       </Typography>
     </div>
   )

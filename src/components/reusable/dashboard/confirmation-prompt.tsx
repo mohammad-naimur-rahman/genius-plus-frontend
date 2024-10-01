@@ -32,7 +32,7 @@ export default function ConfirmationPrompt({
               isLoading={isLoading}
               onClick={cb}
             >
-              <CheckCircle className='h-5 w-5' /> Yes
+              <CheckCircle className='size-5' /> Yes
             </Button>
           </DialogClose>
           <DialogClose>
@@ -41,7 +41,7 @@ export default function ConfirmationPrompt({
               variant='destructive'
               onClick={rejectionCb}
             >
-              <XCircle className='h-5 w-5' /> No
+              <XCircle className='size-5' /> No
             </Button>
           </DialogClose>
         </DialogFooter>

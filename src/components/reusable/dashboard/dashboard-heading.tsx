@@ -9,11 +9,11 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
   variant?: TypographyVariant
 }
 
-export default function DashboardHeading({ title, extra, className, variant = 'h3', ...props }: Props) {
+export default function DashboardHeading({ title, extra, className, variant = 'h2', ...props }: Props) {
   return (
     <div className={cn('mb-6 flex flex-wrap items-center justify-between gap-x-5 gap-y-3', className)} {...props}>
       <Typography variant={variant}>{title}</Typography>
-      <div className='flex flex-wrap items-center gap-x-5'>{extra}</div>
+      <div className='flex flex-wrap items-center gap-x-5 gap-y-2'>{extra}</div>
     </div>
   )
 }

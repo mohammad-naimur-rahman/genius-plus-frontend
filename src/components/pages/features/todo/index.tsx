@@ -6,6 +6,7 @@ import toast from 'react-hot-toast'
 import ConfirmationPrompt from '~/components/reusable/dashboard/confirmation-prompt'
 import { Button } from '~/components/ui/button'
 import { Calendar } from '~/components/ui/calendar'
+import Typography from '~/components/ui/typography'
 import { useClearMyDaysTodoMutation, useGetAllTodosQuery } from '~/redux/features/todosApi'
 import { formatDate, isToday, isTomorrow, oneDayAhead } from '~/utils/date/formatDate'
 import { rtkErrorMessage } from '~/utils/error/errorMessage'
@@ -34,15 +35,15 @@ export default function AITodo() {
   }, [isDeleteLoading, isDeleteSuccess, isError, error])
 
   return (
-    <div>
-      <div className='flex items-start gap-x-20'>
-        <div className='w-full'>
+    <div className='pb-20'>
+      <div className='flex flex-col-reverse items-start justify-start gap-x-20 gap-y-10 lg:flex-row'>
+        <div className='w-full max-w-3xl'>
           <AllTodos date={date} isLoading={isLoading} isSuccess={isSuccess} data={data!} />
 
-          <div className='flex items-center gap-x-3'>
-            {isSuccess && ((isToday(date) ?? isTomorrow(date)) ? <CreateSingleTodoForm date={date} /> : null)}
+          <div className='flex flex-wrap items-center gap-x-3 gap-y-2'>
+            {(isToday(date) || isTomorrow(date)) && isSuccess ? <CreateSingleTodoForm date={date} /> : null}
 
-            {(isToday(date) ?? isTomorrow(date)) && isSuccess && data?.data.length ? (
+            {(isToday(date) || isTomorrow(date)) && isSuccess && data?.data.length ? (
               <Button
                 variant='destructive'
                 icon={<Trash2 />}
@@ -54,18 +55,23 @@ export default function AITodo() {
               </Button>
             ) : null}
 
-            {(isToday(date) ?? isTomorrow(date)) && isSuccess && !data?.data.length ? (
+            {(isToday(date) || isTomorrow(date)) && isSuccess && !data?.data.length ? (
               <CreateTodoWithAIModal date={date} />
             ) : null}
           </div>
         </div>
-        <Calendar
-          mode='single'
-          selected={date}
-          onSelect={newDate => newDate && setDate(newDate)}
-          disabled={date => date >= new Date(Date.now() + oneDayAhead)}
-          className='w-auto rounded-lg border'
-        />
+        <div className='w-auto'>
+          <Typography variant='h4' className='mb-5 font-light'>
+            Choose a date
+          </Typography>
+          <Calendar
+            mode='single'
+            selected={date}
+            onSelect={newDate => newDate && setDate(newDate)}
+            disabled={date => date >= new Date(Date.now() + oneDayAhead)}
+            className='w-auto rounded-lg border'
+          />
+        </div>
       </div>
       <ConfirmationPrompt
         open={openPrompt}

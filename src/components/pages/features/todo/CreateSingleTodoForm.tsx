@@ -4,19 +4,12 @@ import { ListPlus } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
+import DrawerDialog from '~/components/reusable/common/DrawerDialog'
 import Form from '~/components/reusable/form/form'
 import { Input } from '~/components/reusable/form/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/reusable/form/select'
 import { Textarea } from '~/components/reusable/form/textarea'
 import { Button } from '~/components/ui/button'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger
-} from '~/components/ui/dialog'
 import { useCreateTodoMutation } from '~/redux/features/todosApi'
 import { convertTo12Hour } from '~/utils/date/convertTo12hour'
 import { formatDate } from '~/utils/date/formatDate'
@@ -81,21 +74,17 @@ export default function CreateSingleTodoForm({ date }: Props) {
   }, [isLoading, isSuccess, isError, error])
 
   return (
-    <Dialog open={open} onOpenChange={setopen}>
-      <DialogTrigger>
-        <Button icon={<ListPlus />} iconPosition='right'>
-          Add a Todo
-        </Button>
-      </DialogTrigger>
-      <DialogContent className='p-3.5'>
-        <DialogHeader>
-          <DialogTitle>Add a todo for the day</DialogTitle>
-          <DialogDescription>
-            It will be added to the list of todos for the day at the end of all tasks. Later on you can update the order
-            by dragging the task
-          </DialogDescription>
-        </DialogHeader>
-
+    <>
+      <Button icon={<ListPlus />} iconPosition='right' onClick={() => setopen(true)}>
+        Add a Todo
+      </Button>
+      <DrawerDialog
+        title='Add a todo for the day'
+        description='It will be added to the list of todos for the day at the end of all tasks. Later on you can update the
+              order by dragging the task'
+        open={open}
+        setopen={setopen}
+      >
         <Form methods={methods} onSubmit={handleSubmit(onSubmit)}>
           <div className='my-3 flex flex-wrap gap-x-4'>
             <Input
@@ -134,7 +123,7 @@ export default function CreateSingleTodoForm({ date }: Props) {
             Add a Todo
           </Button>
         </Form>
-      </DialogContent>
-    </Dialog>
+      </DrawerDialog>
+    </>
   )
 }

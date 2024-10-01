@@ -4,19 +4,12 @@ import { PencilLineIcon } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
+import DrawerDialog from '~/components/reusable/common/DrawerDialog'
 import Form from '~/components/reusable/form/form'
 import { Input } from '~/components/reusable/form/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/reusable/form/select'
 import { Textarea } from '~/components/reusable/form/textarea'
 import { Button } from '~/components/ui/button'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger
-} from '~/components/ui/dialog'
 import { useUpdateTodoMutation } from '~/redux/features/todosApi'
 import { type WithId } from '~/types/common/Response'
 import { type Todo } from '~/types/Todo'
@@ -91,21 +84,16 @@ export default function UpdateTodoModal({ todo }: Props) {
   }, [isLoading, isSuccess, isError, error])
 
   return (
-    <Dialog open={open} onOpenChange={setopen}>
-      <DialogTrigger>
-        <PencilLineIcon className='text-sky-500' />
-      </DialogTrigger>
-      <DialogContent className='p-3.5'>
-        <DialogHeader>
-          <DialogTitle>Update a todo for the day</DialogTitle>
-          <DialogDescription>
-            It will be updated to the list of todos for the day at the end of all tasks. Later on you can update the
-            order by dragging the task
-          </DialogDescription>
-        </DialogHeader>
-
+    <>
+      <PencilLineIcon className='text-sky-500' onClick={() => setopen(true)} />
+      <DrawerDialog
+        title='Update a todo for the day'
+        description='It will be updated to the list of todos for the day at the end of all tasks. Later on you can update the order by dragging the task'
+        open={open}
+        setopen={setopen}
+      >
         <Form methods={methods} onSubmit={handleSubmit(onSubmit)}>
-          <div className='my-3 flex flex-wrap gap-x-4'>
+          <div className='my-3 flex flex-wrap gap-x-3.5'>
             <Input
               name='title'
               label='Title'
@@ -142,7 +130,7 @@ export default function UpdateTodoModal({ todo }: Props) {
             Update Todo
           </Button>
         </Form>
-      </DialogContent>
-    </Dialog>
+      </DrawerDialog>
+    </>
   )
 }
