@@ -35,19 +35,18 @@ export const features = [
   },
   {
     id: 3,
+    title: 'AI Talking Buddy',
+    description: 'Practice english with AI and get feedback.',
+    href: '/features/talking-buddy',
+    icon: aiVoice
+  },
+  {
+    id: 4,
     title: 'AI Tutor',
     description: 'Coming soon...',
     href: '/features/tutor',
     icon: aiTutor
   },
-  {
-    id: 4,
-    title: 'AI Voice Generator',
-    description: 'Coming soon...',
-    href: '/features/voice',
-    icon: aiVoice
-  },
-
   {
     id: 5,
     title: 'AI Notes',

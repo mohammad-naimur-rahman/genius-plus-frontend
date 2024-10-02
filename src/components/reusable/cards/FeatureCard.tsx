@@ -13,7 +13,7 @@ export default function FeatureCard({ feature }: Props) {
   return (
     <CardWrapper
       className={cn('flex cursor-pointer items-start justify-start gap-x-8 gap-y-2 text-balance', {
-        'w-full cursor-not-allowed select-none opacity-70': feature.id > 2
+        'w-full cursor-not-allowed select-none opacity-70': feature.id > 3
       })}
       onClick={e => {
         if (feature.id > 2) {
