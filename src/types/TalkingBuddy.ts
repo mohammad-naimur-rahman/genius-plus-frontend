@@ -4,3 +4,9 @@ export interface TalkingBuddyThread {
   user_id: string
   createdAt: string
 }
+
+export interface TalkingBuddyMessage {
+  id: string
+  role: 'user' | 'assistant'
+  content: string
+}

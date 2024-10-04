@@ -56,7 +56,8 @@ const api = createApi({
     'images',
     'image',
     'tbThreads',
-    'tbThread'
+    'tbThread',
+    'tbMsgs'
   ],
   endpoints: () => ({})
 })

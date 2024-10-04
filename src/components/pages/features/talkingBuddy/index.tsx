@@ -13,7 +13,7 @@ export default function TalkingBuddy() {
   const push = usePush()
   const [sheetOpen, setsheetOpen] = useState<boolean>(false)
   const { data, isLoading, isError, isSuccess } = useGetTalkingBuddyThreadsQuery()
-  console.log(data?.data)
+
   return (
     <div className='mt-32 flex flex-col items-center justify-center gap-y-5 text-balance text-center'>
       <Typography variant='h3' className='flex items-center gap-x-3 font-medium'>
@@ -24,7 +24,7 @@ export default function TalkingBuddy() {
         with friends
       </p>
 
-      <div className='flex flex-wrap items-center gap-x-3 gap-y-2'>
+      <div className='mt-3 flex flex-wrap items-center gap-x-3 gap-y-2'>
         <CreateTalkingBuddyThreadModal />
         <Button
           variant='secondary'

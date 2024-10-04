@@ -26,7 +26,7 @@ interface SpeechRecorderProps {
  *   MicIcon={<CustomMicIcon />}
  *   StopIcon={<CustomStopIcon />}
  *   className="custom-button-styles"
- *   onStop={() => console.log('Stopped listening')}
+ *   onStop={() => console.info('Stopped listening')}
  * />
  */
 export function SpeechRecorder({
