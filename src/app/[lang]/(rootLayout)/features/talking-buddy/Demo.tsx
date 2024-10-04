@@ -10,12 +10,7 @@ interface ThreadRunComponentProps {
   threadId: number
 }
 
-interface Message {
-  content: string
-  timestamp: number
-}
-
-const ThreadRunComponent: React.FC<ThreadRunComponentProps> = ({ threadId }) => {
+const Demo: React.FC<ThreadRunComponentProps> = ({ threadId }) => {
   const [accumulatedMessage, setAccumulatedMessage] = useState('')
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [error, setError] = useState<string | null>(null)
@@ -52,12 +47,32 @@ const ThreadRunComponent: React.FC<ThreadRunComponentProps> = ({ threadId }) => 
           throw new Error('Response body is not readable')
         }
 
-        const decoder = new TextDecoder()
+        const decoder = new TextDecoder('utf-8')
 
         while (true) {
           const { value, done } = await reader.read()
-          const msgs: string[] = []
           if (done) break
+
+          //const chunk = decoder.decode(value)
+          //const lines = chunk.split('\\n')
+
+          //console.log(lines[0]?.replace(/^data: /, ''))
+          // const parsedLines = lines
+          //   .map(line => line.replace(/^data: /, '').trim()) // Remove the "data: " prefix
+          //   .filter(line => line !== '' && line !== '[DONE]') // Remove empty lines and "[DONE]"
+          // //.map(line => JSON.parse(line) as string) // Parse the JSON string
+
+          // for (const parsedLine of parsedLines) {
+          //   // const { choices } = parsedLine
+          //   // const { delta } = choices[0]
+          //   // const { content } = delta
+          //   // // Update the UI with the new content
+          //   // if (content) {
+          //   //   resultText.innerText += content
+          //   // }
+          //   setAccumulatedMessage(prev => prev + parsedLine)
+          //   console.log(parsedLine)
+          // }
 
           const decodedChunk = decoder.decode(value, { stream: true })
           const lines = decodedChunk.split('\n\n')
@@ -75,7 +90,6 @@ const ThreadRunComponent: React.FC<ThreadRunComponentProps> = ({ threadId }) => 
               try {
                 const parsedData = JSON.parse(data) as string
                 setAccumulatedMessage(prev => prev + parsedData)
-                msgs.push(parsedData)
                 // setMessages(prevMessages => [...prevMessages, { content: parsedData, timestamp: Date.now() }])
               } catch (error) {
                 console.error('Failed to parse data:', error)
@@ -152,4 +166,4 @@ const ThreadRunComponent: React.FC<ThreadRunComponentProps> = ({ threadId }) => 
   )
 }
 
-export default ThreadRunComponent
+export default Demo
