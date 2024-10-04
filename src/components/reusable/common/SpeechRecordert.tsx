@@ -16,13 +16,6 @@ interface SpeechRecorderProps {
 /**
  * Renders a customizable speech recorder component that allows the user to record speech and listen to the transcript.
  *
- * @param {SpeechRecorderProps} props - The component props.
- * @param {function} props.onTranscriptChange - A callback function that will be called with the transcript when it changes.
- * @param {React.ReactNode} [props.MicIcon] - Custom icon for the mic button (optional).
- * @param {React.ReactNode} [props.StopIcon] - Custom icon for the stop button (optional).
- * @param {string} [props.buttonClassName] - Custom styles for the buttons (optional).
- * @return {JSX.Element} The speech recorder component.
- *
  * @example
  * const handleTranscriptChange = (transcript: string) => {
  *   setValue('text', transcript, { shouldValidate: true })
