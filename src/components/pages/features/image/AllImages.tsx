@@ -15,9 +15,8 @@ export default function AllImages() {
   const [params, setparams] = useState<Params>(initParams({}))
   const { data, isSuccess, isLoading } = useGetAllImagesQuery(params)
 
-  console.log(params)
   return (
-    <div>
+    <div className='mb-10'>
       <Typography variant='h4' className='mb-6 font-light'>
         All generated Images
       </Typography>
