@@ -31,7 +31,7 @@ export default function TalkingBuddy() {
           icon={<StepForward />}
           iconPosition='right'
           disabled={isLoading || isError || !data?.data?.length}
-          onClick={() => push(`/features/talking-buddy/${data?.data?.at(-1)?.id}`)}
+          onClick={() => push(`/features/talking-buddy/${data?.data?.at(0)?.id}`)}
         >
           Continue last session
         </Button>
