@@ -39,20 +39,24 @@ export default function ChoosePreviousSession({ sheetOpen, setsheetOpen, isLoadi
           </div>
         )}
 
-        {isSuccess && (
-          <ul className='mt-6 flex flex-col gap-y-3'>
-            {sessions?.map(session => (
-              <li
-                key={session.id}
-                onClick={() => selectSession(session.id)}
-                className='flex w-full max-w-full cursor-pointer flex-col gap-y-1 rounded-sm border-b border-secondary p-2 pb-1 hover:bg-muted/50'
-              >
-                <span className='text-sm font-medium text-secondary-foreground'>{session.name}</span>
-                <span className='text-xs text-muted-foreground'>Created {getRelativeTime(session.createdAt)}</span>
-              </li>
-            ))}
-          </ul>
-        )}
+        {isSuccess ? (
+          sessions?.length ? (
+            <ul className='mt-6 flex flex-col gap-y-3'>
+              {sessions?.map(session => (
+                <li
+                  key={session.id}
+                  onClick={() => selectSession(session.id)}
+                  className='flex w-full max-w-full cursor-pointer flex-col gap-y-1 rounded-sm border-b border-secondary p-2 pb-1 hover:bg-muted/50'
+                >
+                  <span className='text-sm font-medium text-secondary-foreground'>{session.name}</span>
+                  <span className='text-xs text-muted-foreground'>Created {getRelativeTime(session.createdAt)}</span>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className='mt-6 italic text-muted-foreground'>There&apos;re no sessions yet</p>
+          )
+        ) : null}
       </SheetContent>
     </Sheet>
   )

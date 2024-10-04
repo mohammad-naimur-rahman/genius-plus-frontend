@@ -1,12 +1,13 @@
 'use client'
 
-import { CirclePlay, ListStart, Speech, StepForward } from 'lucide-react'
+import { ListStart, Speech, StepForward } from 'lucide-react'
 import { useState } from 'react'
 import { Button } from '~/components/ui/button'
 import Typography from '~/components/ui/typography'
 import usePush from '~/hooks/usePush'
 import { useGetTalkingBuddyThreadsQuery } from '~/redux/features/talkingBuddyApi'
 import ChoosePreviousSession from './ChoosePreviousSession'
+import CreateTalkingBuddyThreadModal from './CreateTalkingBuddyThreadModal'
 
 export default function TalkingBuddy() {
   const push = usePush()
@@ -24,9 +25,7 @@ export default function TalkingBuddy() {
       </p>
 
       <div className='flex flex-wrap items-center gap-x-3 gap-y-2'>
-        <Button icon={<CirclePlay />} iconPosition='right'>
-          Start new session
-        </Button>
+        <CreateTalkingBuddyThreadModal />
         <Button
           variant='secondary'
           icon={<StepForward />}

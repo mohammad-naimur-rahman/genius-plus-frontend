@@ -46,7 +46,18 @@ const baseQueryWithReauth = async (args: FetchArgs, api: BaseQueryApi, extraOpti
 const api = createApi({
   reducerPath: 'api',
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['user', 'users', 'todos', 'todo', 'todoTemplates', 'todoTemplate', 'images', 'image'],
+  tagTypes: [
+    'user',
+    'users',
+    'todos',
+    'todo',
+    'todoTemplates',
+    'todoTemplate',
+    'images',
+    'image',
+    'tbThreads',
+    'tbThread'
+  ],
   endpoints: () => ({})
 })
 
