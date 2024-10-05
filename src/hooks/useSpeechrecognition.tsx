@@ -39,6 +39,11 @@ export function useSpeechRecognition({ onTranscriptChange }: UseSpeechRecognitio
   const recognitionRef = useRef<SpeechRecognition | null>(null)
   const transcriptRef = useRef<string>('')
 
+  const resetTranscript = useCallback(() => {
+    transcriptRef.current = ''
+    onTranscriptChange('') // Notify the parent component that the transcript has been reset
+  }, [onTranscriptChange])
+
   const removeRepetitions = (newText: string): string => {
     const fullText = transcriptRef.current + ' ' + newText
     const words = fullText.split(/\s+/)
@@ -78,8 +83,9 @@ export function useSpeechRecognition({ onTranscriptChange }: UseSpeechRecognitio
       recognitionRef.current.onend = null
     }
     setIsListening(false)
+    resetTranscript() // Reset the transcript when stopping
     toast.success('Mic stopped listening.')
-  }, [])
+  }, [resetTranscript])
 
   const startListening = useCallback(() => {
     if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
@@ -109,6 +115,7 @@ export function useSpeechRecognition({ onTranscriptChange }: UseSpeechRecognitio
         setIsPreparing(false)
         toast.dismiss()
         toast.success('Mic listening...')
+        resetTranscript() // Reset the transcript when starting a new session
       }
 
       recognitionRef.current.onresult = (event: SpeechRecognitionEvent) => {
@@ -149,12 +156,13 @@ export function useSpeechRecognition({ onTranscriptChange }: UseSpeechRecognitio
     }
 
     recognitionRef.current.start()
-  }, [isListening, onTranscriptChange, stopListening])
+  }, [isListening, onTranscriptChange, stopListening, resetTranscript])
 
   return {
     isListening,
     startListening,
     stopListening,
-    isPreparing
+    isPreparing,
+    resetTranscript
   }
 }

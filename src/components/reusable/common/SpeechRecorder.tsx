@@ -36,13 +36,16 @@ export function SpeechRecorder({
   className,
   onTranscriptSubmit
 }: SpeechRecorderProps) {
-  const { isListening, startListening, stopListening, isPreparing } = useSpeechRecognition({ onTranscriptChange })
+  const { isListening, startListening, stopListening, isPreparing, resetTranscript } = useSpeechRecognition({
+    onTranscriptChange
+  })
 
   const handleMicClick = () => {
     if (isListening) {
       if (onTranscriptSubmit) onTranscriptSubmit()
       stopListening()
     } else {
+      resetTranscript()
       startListening()
     }
   }
