@@ -48,8 +48,14 @@ export default function ConversationPassing({ refetch }: Props) {
   }
 
   return (
-    <div className='flex h-[calc(50vh-40px)] flex-col items-center justify-end gap-y-4 pb-20 pt-5'>
-      <p className='max-w-lg text-lg font-light text-secondary-foreground'>{prompt || streamData}</p>
+    <div className='flex h-[calc(40vh-60px)] flex-col items-center justify-end gap-y-4 rounded-lg bg-muted/50 px-5 pb-20 pt-5'>
+      <p
+        className={cn('max-w-xl text-balance text-center text-lg italic text-secondary-foreground', {
+          'text-sky-600 dark:text-sky-400': streamData
+        })}
+      >
+        {prompt || streamData}
+      </p>
       {isSpeaking ? (
         <Button
           onClick={stopSpeaking}
@@ -63,7 +69,7 @@ export default function ConversationPassing({ refetch }: Props) {
         <SpeechRecorder
           onTranscriptChange={handleTranscriptChange}
           onTranscriptSubmit={sendMsgFn}
-          MicIcon={<Mic className='size-10' strokeWidth={1} />}
+          MicIcon={<Mic className='size-8' strokeWidth={1} />}
           StopIcon={<Square className='size-7' strokeWidth={1} />}
           className='size-14'
         />

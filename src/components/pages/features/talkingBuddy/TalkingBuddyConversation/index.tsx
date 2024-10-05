@@ -18,7 +18,7 @@ export default function TalkingBuddyConversation() {
   const { data, refetch } = useGetTalkingBuddyConversationQuery(id as string)
 
   return (
-    <div className=''>
+    <>
       <MessagesList
         isThreadLoading={isThreadLoading}
         isThreadSuccess={isThreadSuccess}
@@ -26,6 +26,6 @@ export default function TalkingBuddyConversation() {
         messages={data?.data ?? []}
       />
       <ConversationPassing refetch={refetch} />
-    </div>
+    </>
   )
 }

@@ -10,7 +10,7 @@ interface Props {
 
 export default function MessagesList({ isThreadLoading, isThreadSuccess, name }: Props) {
   return (
-    <section className='h-[calc(50vh-40px)] bg-gray-100'>
+    <section className='h-[calc(60vh-40px)]'>
       <Heading isThreadLoading={isThreadLoading} isThreadSuccess={isThreadSuccess} name={name} />
     </section>
   )
