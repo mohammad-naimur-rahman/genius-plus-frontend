@@ -1,6 +1,6 @@
 'use client'
 
-import { Mic, Square } from 'lucide-react'
+import { Loader2, Mic, Square } from 'lucide-react'
 import { Button } from '~/components/ui/button'
 import { useSpeechRecognition } from '~/hooks/useSpeechrecognition'
 import { cn } from '~/lib/utils'
@@ -9,7 +9,7 @@ interface SpeechRecorderProps {
   onTranscriptChange: (transcript: string) => void
   MicIcon?: React.ReactNode
   StopIcon?: React.ReactNode
-  onStop?: () => void
+  onTranscriptSubmit?: () => void
   className?: string
 }
 
@@ -26,7 +26,7 @@ interface SpeechRecorderProps {
  *   MicIcon={<CustomMicIcon />}
  *   StopIcon={<CustomStopIcon />}
  *   className="custom-button-styles"
- *   onStop={() => console.info('Stopped listening')}
+ *   onTranscriptSubmit={() => console.info('Stopped listening')}
  * />
  */
 export function SpeechRecorder({
@@ -34,18 +34,32 @@ export function SpeechRecorder({
   MicIcon = <Mic className='size-5' />,
   StopIcon = <Square className='size-4' />,
   className,
-  onStop
+  onTranscriptSubmit
 }: SpeechRecorderProps) {
-  const { isListening, startListening, stopListening } = useSpeechRecognition({ onTranscriptChange })
+  const { isListening, startListening, stopListening, isPreparing } = useSpeechRecognition({ onTranscriptChange })
 
   const handleMicClick = () => {
     if (isListening) {
-      if (onStop) onStop()
+      if (onTranscriptSubmit) onTranscriptSubmit()
       stopListening()
     } else {
       startListening()
     }
   }
+
+  if (isPreparing)
+    return (
+      <Button
+        size='icon'
+        variant='outline'
+        className={cn(
+          'animate-pulse rounded-full border-destructive text-destructive hover:text-destructive',
+          className
+        )}
+      >
+        <Loader2 />
+      </Button>
+    )
 
   if (isListening) {
     return (

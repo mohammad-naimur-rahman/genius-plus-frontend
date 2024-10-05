@@ -35,6 +35,7 @@ declare global {
 
 export function useSpeechRecognition({ onTranscriptChange }: UseSpeechRecognitionProps) {
   const [isListening, setIsListening] = useState(false)
+  const [isPreparing, setIsPreparing] = useState(false)
   const recognitionRef = useRef<SpeechRecognition | null>(null)
   const transcriptRef = useRef<string>('')
 
@@ -86,11 +87,15 @@ export function useSpeechRecognition({ onTranscriptChange }: UseSpeechRecognitio
       return
     }
 
+    setIsPreparing(true)
+    toast.loading('Preparing microphone...')
+
     if (!recognitionRef.current) {
       const SpeechRecognitionConstructor = window.SpeechRecognition ?? window.webkitSpeechRecognition
 
       if (!SpeechRecognitionConstructor) {
         toast.error('Speech recognition API not supported in this browser.')
+        setIsPreparing(false)
         return
       }
 
@@ -101,6 +106,8 @@ export function useSpeechRecognition({ onTranscriptChange }: UseSpeechRecognitio
 
       recognitionRef.current.onstart = () => {
         setIsListening(true)
+        setIsPreparing(false)
+        toast.dismiss()
         toast.success('Mic listening...')
       }
 
@@ -147,6 +154,7 @@ export function useSpeechRecognition({ onTranscriptChange }: UseSpeechRecognitio
   return {
     isListening,
     startListening,
-    stopListening
+    stopListening,
+    isPreparing
   }
 }

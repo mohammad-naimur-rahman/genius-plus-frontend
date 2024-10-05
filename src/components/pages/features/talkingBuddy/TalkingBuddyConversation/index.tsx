@@ -1,9 +1,9 @@
 'use client'
 
 import { useParams } from 'next/navigation'
-import DashboardHeading from '~/components/reusable/dashboard/dashboard-heading'
-import { Skeleton } from '~/components/ui/skeleton'
 import { useGetTalkingBuddyConversationQuery, useGetTalkingBuddyThreadQuery } from '~/redux/features/talkingBuddyApi'
+import ConversationPassing from './ConversationPassing'
+import MessagesList from './MessagesList'
 
 export default function TalkingBuddyConversation() {
   const { id } = useParams()
@@ -15,12 +15,17 @@ export default function TalkingBuddyConversation() {
   } = useGetTalkingBuddyThreadQuery(id as string)
 
   // Fetching conversation messages
-  const { data } = useGetTalkingBuddyConversationQuery(id as string)
-  console.log(data?.data)
+  const { data, refetch } = useGetTalkingBuddyConversationQuery(id as string)
+
   return (
-    <div className='mx-auto max-w-5xl'>
-      {isThreadLoading && <Skeleton className='mb-6 h-10 w-full max-w-lg rounded-lg' />}
-      {isThreadSuccess && <DashboardHeading title={threadData?.data?.name} />}
+    <div className=''>
+      <MessagesList
+        isThreadLoading={isThreadLoading}
+        isThreadSuccess={isThreadSuccess}
+        name={threadData?.data?.name ?? ''}
+        messages={data?.data ?? []}
+      />
+      <ConversationPassing refetch={refetch} />
     </div>
   )
 }

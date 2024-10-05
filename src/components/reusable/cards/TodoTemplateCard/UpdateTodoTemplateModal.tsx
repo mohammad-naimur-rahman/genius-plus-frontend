@@ -14,7 +14,7 @@ import { type TodoTemplate } from '~/types/TodoTemplate'
 import { rtkErrorMessage } from '~/utils/error/errorMessage'
 import { isObjEmpty } from '~/utils/misc/isEmpty'
 import DrawerDialog from '../../common/DrawerDialog'
-import { SpeechRecorder } from '../../common/SpeechRecordert'
+import { SpeechRecorder } from '../../common/SpeechRecorder'
 
 interface Props {
   template: WithId<TodoTemplate>
