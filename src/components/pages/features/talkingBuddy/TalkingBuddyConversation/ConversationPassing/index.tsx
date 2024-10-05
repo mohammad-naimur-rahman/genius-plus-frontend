@@ -1,11 +1,14 @@
 'use client'
 
-import { Mic, Square } from 'lucide-react'
+import { Mic, Speech, Square } from 'lucide-react'
 import { useParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { SpeechRecorder } from '~/components/reusable/common/SpeechRecorder'
+import { Button } from '~/components/ui/button'
+import { useSpeechSynthesis } from '~/hooks/useSpeechSynthesis'
 import { useStream } from '~/hooks/useStream'
+import { cn } from '~/lib/utils'
 import { rtkErrorMessage } from '~/utils/error/errorMessage'
 
 interface Props {
@@ -15,6 +18,9 @@ interface Props {
 export default function ConversationPassing({ refetch }: Props) {
   const { id } = useParams()
   const [prompt, setprompt] = useState<string>('')
+
+  const { isSpeaking, startSpeaking, stopSpeaking } = useSpeechSynthesis()
+
   const handleTranscriptChange = (transcript: string) => {
     setprompt(transcript)
   }
@@ -27,6 +33,9 @@ export default function ConversationPassing({ refetch }: Props) {
       setprompt('')
       toast.dismiss()
       console.log(streamData)
+      if (streamData && typeof streamData === 'string') {
+        startSpeaking(streamData)
+      }
       refetch()
     }
     if (isError) toast.error(rtkErrorMessage(error!))
@@ -41,13 +50,24 @@ export default function ConversationPassing({ refetch }: Props) {
   return (
     <div className='flex h-[calc(50vh-40px)] flex-col items-center justify-end gap-y-4 pb-20 pt-5'>
       <p className='max-w-lg text-lg font-light text-secondary-foreground'>{prompt || streamData}</p>
-      <SpeechRecorder
-        onTranscriptChange={handleTranscriptChange}
-        onTranscriptSubmit={sendMsgFn}
-        MicIcon={<Mic className='size-10' strokeWidth={1} />}
-        StopIcon={<Square className='size-7' strokeWidth={1} />}
-        className='size-14'
-      />
+      {isSpeaking ? (
+        <Button
+          onClick={stopSpeaking}
+          size='icon'
+          variant='outline'
+          className={cn('hover:text-destructiv size-14 animate-pulse rounded-full border-destructive text-destructive')}
+        >
+          <Speech className='size-8' strokeWidth={1.3} />
+        </Button>
+      ) : (
+        <SpeechRecorder
+          onTranscriptChange={handleTranscriptChange}
+          onTranscriptSubmit={sendMsgFn}
+          MicIcon={<Mic className='size-10' strokeWidth={1} />}
+          StopIcon={<Square className='size-7' strokeWidth={1} />}
+          className='size-14'
+        />
+      )}
     </div>
   )
 }
