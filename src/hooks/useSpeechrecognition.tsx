@@ -83,9 +83,8 @@ export function useSpeechRecognition({ onTranscriptChange }: UseSpeechRecognitio
       recognitionRef.current.onend = null
     }
     setIsListening(false)
-    resetTranscript() // Reset the transcript when stopping
-    toast.success('Mic stopped listening.')
-  }, [resetTranscript])
+    // resetTranscript() // Reset the transcript when stopping
+  }, [])
 
   const startListening = useCallback(() => {
     if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {

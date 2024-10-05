@@ -48,13 +48,16 @@ export default function ConversationPassing({ refetch }: Props) {
   }
 
   return (
-    <div className='flex h-[calc(40vh-60px)] flex-col items-center justify-end gap-y-4 rounded-lg bg-muted/50 px-5 pb-20 pt-5'>
+    <div className='flex h-[calc(40vh-60px)] flex-col items-center justify-end gap-y-4 rounded-lg bg-muted/50 px-3 pb-3 pt-3 sm:pb-10 md:pb-20'>
       <p
-        className={cn('max-w-xl text-balance text-center text-lg italic text-secondary-foreground', {
-          'text-sky-600 dark:text-sky-400': streamData
-        })}
+        className={cn(
+          'max-w-xl text-balance text-center text-[15px] italic text-sky-600 dark:text-sky-400 sm:text-base md:text-lg',
+          {
+            'text-secondary-foreground': prompt
+          }
+        )}
       >
-        {prompt || streamData}
+        {prompt || streamData || 'Start talking by clicking on the microphone...'}
       </p>
       {isSpeaking ? (
         <Button

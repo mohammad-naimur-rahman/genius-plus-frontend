@@ -7,13 +7,7 @@ export const useSpeechSynthesis = () => {
   const speechSynthesisRef = useRef<SpeechSynthesisUtterance | null>(null)
 
   useEffect(() => {
-    // Load voices when component mounts
-    //loadVoices()
-
     setVoices(speechSynthesis.getVoices())
-
-    // Reload voices when voices change
-    //window.speechSynthesis.onvoiceschanged = loadVoices
   }, [])
 
   const stopSpeaking = useCallback(() => {
