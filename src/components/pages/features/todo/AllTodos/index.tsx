@@ -146,7 +146,7 @@ export default function AllTodos({ date, isLoading, isSuccess, data }: Props) {
                               )}
 
                               <TableCell className='flex items-center gap-x-1'>
-                                {todo.title} ({todo.order})
+                                {todo.title}
                                 {todo.description && (
                                   <TooltipProvider>
                                     <Tooltip>
