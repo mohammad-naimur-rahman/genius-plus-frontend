@@ -32,7 +32,7 @@ Genius Plus is an **ongoing project** 🚧 with **many more exciting features co
 
 ## 💻 Tech Stack
 
-- **Framework**: Next.js
+- **Framework**: Next.js, TypeScript
 - **Styling**: Tailwind CSS, Sass
 - **State Management**: Redux Toolkit
 - **AI Integration**: Text-to-speech & speech-to-text APIs, Image generation APIs
