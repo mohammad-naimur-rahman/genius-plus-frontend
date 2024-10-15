@@ -35,9 +35,9 @@ Genius Plus is an **ongoing project** 🚧 with **many more exciting features co
 - **Framework**: Next.js, TypeScript
 - **Styling**: Tailwind CSS, Sass
 - **State Management**: Redux Toolkit
-- **AI Integration**: Text-to-speech & speech-to-text APIs, Image generation APIs
+- **AI Integration**: Text-to-speech & speech-to-text APIs, Image generation APIs, Assistant API
 - **Forms & Validation**: React Hook Form, Zod
-- **Icons & UI**: Radix UI, Lucide-react
+- **Icons & UI**: ShadCN UI, Lucide-react
 - **Other Libraries**: Axios, React-beautiful-dnd, JWT Decode
 
 ---
