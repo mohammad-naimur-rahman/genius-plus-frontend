@@ -58,7 +58,7 @@ export default function AllTodos({ date, isLoading, isSuccess, data }: Props) {
       toast.success(updatedTododata.message)
     }
     if (isUpdateError) toast.error(rtkErrorMessage(updateError))
-  }, [isUpdateSuccess, isUpdateError, updateError, updatedTododata, date])
+  }, [isUpdateSuccess, isUpdateError, updateError, updatedTododata])
 
   const handleOnDragEnd: OnDragEndResponder = result => {
     if (!result.destination) return
