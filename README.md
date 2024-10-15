@@ -4,9 +4,9 @@
 
 🌐 **Live Project**: [Genius+](https://genius-plus-frontend.vercel.app/en)
 
-🛠 **Admin Credentials**:  
-**Email**: `admin@gmail.com`  
-**Password**: `AluVaj!1*`
+🛠 **Example User Credentials**:  
+**Email**: `naeemhasan28@gmail.com`  
+**Password**: `AluVaj!1**`
 
 ---
 
