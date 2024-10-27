@@ -11,10 +11,11 @@ interface Props {
 export default function layout({ children }: Props) {
   const cookiesStore = cookies()
   const refreshToken = cookiesStore.get('refreshToken')?.value
-  const isAuth = !!refreshToken
-  if (!isAuth) {
+
+  if (!refreshToken) {
     redirect('/login')
   }
+
   return (
     <div>
       <nav className='container flex h-20 items-center justify-between'>

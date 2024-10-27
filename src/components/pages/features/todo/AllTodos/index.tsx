@@ -4,6 +4,7 @@ import { format } from 'date-fns'
 import { Forward, GripVertical, HelpCircle, Trash2 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { DragDropContext, Draggable, Droppable, type OnDragEndResponder } from 'react-beautiful-dnd'
+import Confetti from 'react-confetti'
 import toast from 'react-hot-toast'
 import ConfirmationPrompt from '~/components/reusable/dashboard/confirmation-prompt'
 import { Checkbox } from '~/components/reusable/form/checkbox'
@@ -13,6 +14,7 @@ import { Skeleton } from '~/components/ui/skeleton'
 import { Table, TableBody, TableCell, TableRow } from '~/components/ui/table'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '~/components/ui/tooltip'
 import Typography from '~/components/ui/typography'
+import { useWindowSize } from '~/hooks/useWindowSize'
 import { cn } from '~/lib/utils'
 import { useDeleteTodoMutation, useUpdateTodoMutation } from '~/redux/features/todosApi'
 import { type Response, type WithId } from '~/types/common/Response'
@@ -33,6 +35,7 @@ interface Props {
 
 export default function AllTodos({ date, isLoading, isSuccess, data }: Props) {
   const [todos, setTodos] = useState<WithId<Todo>[]>([])
+  const [allCompleted, setAllCompleted] = useState<boolean>(false)
 
   useEffect(() => {
     if (isSuccess && data?.data) {
@@ -60,7 +63,20 @@ export default function AllTodos({ date, isLoading, isSuccess, data }: Props) {
       toast.success(updatedTododata.message)
     }
     if (isUpdateError) toast.error(rtkErrorMessage(updateError))
-  }, [isUpdateSuccess, isUpdateError, updateError, updatedTododata])
+  }, [isUpdateSuccess, isUpdateError, updateError, updatedTododata?.message])
+
+  useEffect(() => {
+    if (isUpdateSuccess && updatedTododata.message === 'Todo marked as completed!' && isSuccess) {
+      const completedTodosCount = data.data.filter(todo => todo.is_complete).length
+      // Showing confetti if all todos are completed for the day
+      if (data.data.length === completedTodosCount) {
+        setAllCompleted(true)
+        setTimeout(() => setAllCompleted(false), 7500)
+      } else setAllCompleted(false)
+    }
+  }, [data?.data, isSuccess, isUpdateSuccess, updatedTododata?.message])
+
+  const { width, height } = useWindowSize()
 
   const handleOnDragEnd: OnDragEndResponder = result => {
     if (!result.destination) return
@@ -231,6 +247,8 @@ export default function AllTodos({ date, isLoading, isSuccess, data }: Props) {
         onOpenChange={setopenPrompt}
         cb={() => deleteTodo(deleteId!)}
       />
+
+      <Confetti width={width} height={height} numberOfPieces={1000} recycle={!allCompleted} run={allCompleted} />
     </div>
   )
 }
