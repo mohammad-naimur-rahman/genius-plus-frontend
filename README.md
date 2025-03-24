@@ -3,6 +3,9 @@
 **Genius+** is an AI-powered productivity app for students! It helps generate daily to-do lists, manage tasks with ease, practice English through text-to-speech and speech-to-text, and even generate images using prompts or predefined options. It's the perfect companion for students to stay organized and improve their English skills!
 
 🌐 **Live Project**: [Genius+](https://genius-plus-frontend.vercel.app/en)
+▶ **Demo Video**: [YouTube](https://youtu.be/OJCRnE5eXMQ)
+
+---
 
 🛠 **Example User Credentials**:  
 **Email**: `naeemhasan28@gmail.com`  
@@ -60,6 +63,10 @@ bun install
 ### 3️⃣ Set up environment variables:
 
 - Create a `.env.local` file in the root directory. and follow .env.example file.
+
+```bash
+cp .env.example .env.local
+```
 
 ### 4️⃣ Start the development server:
 
