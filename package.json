@@ -11,7 +11,7 @@
     "lint:fix": "next lint --fix",
     "prettier:fix": "prettier --write 'src/**/*",
     "fix": "bun lint:fix && bun prettier:fix",
-    "prepare": "husky install"
+    "prepare": "husky"
   },
   "dependencies": {
     "@formatjs/intl-localematcher": "^0.5.4",
