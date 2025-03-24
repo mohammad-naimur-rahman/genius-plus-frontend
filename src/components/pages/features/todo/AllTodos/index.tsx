@@ -4,6 +4,7 @@ import { format } from 'date-fns'
 import { Forward, GripVertical, HelpCircle, Trash2 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { DragDropContext, Draggable, Droppable, type OnDragEndResponder } from 'react-beautiful-dnd'
+import Confetti from 'react-confetti'
 import toast from 'react-hot-toast'
 import ConfirmationPrompt from '~/components/reusable/dashboard/confirmation-prompt'
 import { Checkbox } from '~/components/reusable/form/checkbox'
@@ -13,6 +14,8 @@ import { Skeleton } from '~/components/ui/skeleton'
 import { Table, TableBody, TableCell, TableRow } from '~/components/ui/table'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '~/components/ui/tooltip'
 import Typography from '~/components/ui/typography'
+import { useWindowSize } from '~/hooks/useWindowSize'
+import { cn } from '~/lib/utils'
 import { useDeleteTodoMutation, useUpdateTodoMutation } from '~/redux/features/todosApi'
 import { type Response, type WithId } from '~/types/common/Response'
 import { type Todo } from '~/types/Todo'
@@ -21,6 +24,7 @@ import { formatDate, isToday, isTomorrow, isYesterday } from '~/utils/date/forma
 import { rtkErrorMessage } from '~/utils/error/errorMessage'
 import { isArrEmpty } from '~/utils/misc/isEmpty'
 import UpdateTodoModal from '../UpdateTodoModal'
+import DragPreview from './DragPreview'
 
 interface Props {
   date: Date | undefined
@@ -31,6 +35,7 @@ interface Props {
 
 export default function AllTodos({ date, isLoading, isSuccess, data }: Props) {
   const [todos, setTodos] = useState<WithId<Todo>[]>([])
+  const [allCompleted, setAllCompleted] = useState<boolean>(false)
 
   useEffect(() => {
     if (isSuccess && data?.data) {
@@ -58,7 +63,20 @@ export default function AllTodos({ date, isLoading, isSuccess, data }: Props) {
       toast.success(updatedTododata.message)
     }
     if (isUpdateError) toast.error(rtkErrorMessage(updateError))
-  }, [isUpdateSuccess, isUpdateError, updateError, updatedTododata, date])
+  }, [isUpdateSuccess, isUpdateError, updateError, updatedTododata?.message])
+
+  useEffect(() => {
+    if (isUpdateSuccess && updatedTododata.message === 'Todo marked as completed!' && isSuccess) {
+      const completedTodosCount = data.data.filter(todo => todo.is_complete).length
+      // Showing confetti if all todos are completed for the day
+      if (data.data.length === completedTodosCount) {
+        setAllCompleted(true)
+        setTimeout(() => setAllCompleted(false), 7500)
+      } else setAllCompleted(false)
+    }
+  }, [data?.data, isSuccess, isUpdateSuccess, updatedTododata?.message])
+
+  const { width, height } = useWindowSize()
 
   const handleOnDragEnd: OnDragEndResponder = result => {
     if (!result.destination) return
@@ -121,79 +139,86 @@ export default function AllTodos({ date, isLoading, isSuccess, data }: Props) {
                     {todos.map(todo => {
                       return (
                         <Draggable key={todo.id.toString()} draggableId={todo.id.toString()} index={todo.order}>
-                          {provided => (
-                            <TableRow
-                              key={todo.id.toString()}
-                              className='relative'
-                              ref={provided.innerRef}
-                              {...provided.draggableProps}
-                            >
-                              {(isToday(date) ?? isTomorrow(date)) && (
-                                <TableCell {...provided.dragHandleProps}>
-                                  <GripVertical className='text-muted-secondary cursor-grab' />
-                                </TableCell>
-                              )}
-                              {isToday(date) && (
-                                <TableCell>
-                                  <Checkbox
-                                    className='mb-0.5'
-                                    checked={todo.is_complete}
-                                    onClick={() =>
-                                      updateTodo({ id: todo.id, body: { is_complete: !todo.is_complete } })
-                                    }
-                                  />
-                                </TableCell>
-                              )}
-
-                              <TableCell className='flex items-center gap-x-1'>
-                                {todo.title}
-                                {todo.description && (
-                                  <TooltipProvider>
-                                    <Tooltip>
-                                      <TooltipTrigger>
-                                        <HelpCircle className='size-4 text-muted-foreground' />
-                                      </TooltipTrigger>
-                                      <TooltipContent>
-                                        <p>{todo.description}</p>
-                                      </TooltipContent>
-                                    </Tooltip>
-                                  </TooltipProvider>
+                          {(provided, snapshot) => (
+                            <>
+                              <TableRow
+                                key={todo.id.toString()}
+                                className={cn('relative transition-none duration-0', {
+                                  'opacity-0': snapshot.isDragging
+                                })}
+                                ref={provided.innerRef}
+                                {...provided.draggableProps}
+                              >
+                                {(isToday(date) ?? isTomorrow(date)) && (
+                                  <TableCell {...provided.dragHandleProps}>
+                                    <GripVertical className='text-muted-secondary cursor-grab' />
+                                  </TableCell>
                                 )}
-                              </TableCell>
-                              <TableCell>{todo.time_range}</TableCell>
-                              <TableCell>{todo.priority}</TableCell>
-                              <TableCell>
-                                <TableActions>
-                                  <UpdateTodoModal todo={todo} />
-                                  <Trash2
-                                    className='text-destructive'
-                                    onClick={() => {
-                                      setopenPrompt(true)
-                                      setdeleteId(todo.id)
-                                    }}
-                                  />
-                                  {!isToday(date) && !isTomorrow(date) && !todo.is_complete && (
+                                {isToday(date) && (
+                                  <TableCell>
+                                    <Checkbox
+                                      className='mb-0.5'
+                                      checked={todo.is_complete}
+                                      onClick={() =>
+                                        updateTodo({ id: todo.id, body: { is_complete: !todo.is_complete } })
+                                      }
+                                    />
+                                  </TableCell>
+                                )}
+
+                                <TableCell className='flex items-center gap-x-1'>
+                                  {todo.title}
+                                  {todo.description && (
                                     <TooltipProvider>
                                       <Tooltip>
-                                        <TooltipTrigger
-                                          onClick={() =>
-                                            updateTodo({ id: todo.id, body: { date: formatDate(new Date()) } })
-                                          }
-                                        >
-                                          <Forward className='text-emerald-500' />
+                                        <TooltipTrigger>
+                                          <HelpCircle className='size-4 text-muted-foreground' />
                                         </TooltipTrigger>
                                         <TooltipContent>
-                                          <p>Forward this task to today&apos;s task</p>
+                                          <p>{todo.description}</p>
                                         </TooltipContent>
                                       </Tooltip>
                                     </TooltipProvider>
                                   )}
-                                </TableActions>
-                              </TableCell>
-                              {todo.is_complete && (
-                                <div className='absolute left-0 top-1/2 h-px w-full -translate-y-1/2 bg-primary' />
+                                </TableCell>
+                                <TableCell>{todo.time_range}</TableCell>
+                                <TableCell>{todo.priority}</TableCell>
+                                <TableCell>
+                                  <TableActions>
+                                    <UpdateTodoModal todo={todo} />
+                                    <Trash2
+                                      className='text-destructive'
+                                      onClick={() => {
+                                        setopenPrompt(true)
+                                        setdeleteId(todo.id)
+                                      }}
+                                    />
+                                    {!isToday(date) && !isTomorrow(date) && !todo.is_complete && (
+                                      <TooltipProvider>
+                                        <Tooltip>
+                                          <TooltipTrigger
+                                            onClick={() =>
+                                              updateTodo({ id: todo.id, body: { date: formatDate(new Date()) } })
+                                            }
+                                          >
+                                            <Forward className='text-emerald-500' />
+                                          </TooltipTrigger>
+                                          <TooltipContent>
+                                            <p>Forward this task to today&apos;s task</p>
+                                          </TooltipContent>
+                                        </Tooltip>
+                                      </TooltipProvider>
+                                    )}
+                                  </TableActions>
+                                </TableCell>
+                                {todo.is_complete && (
+                                  <div className='absolute left-0 top-1/2 h-px w-full -translate-y-1/2 bg-primary' />
+                                )}
+                              </TableRow>
+                              {snapshot.isDragging && (
+                                <DragPreview todo={todo} style={provided.draggableProps.style!} date={date} />
                               )}
-                            </TableRow>
+                            </>
                           )}
                         </Draggable>
                       )
@@ -204,7 +229,7 @@ export default function AllTodos({ date, isLoading, isSuccess, data }: Props) {
               </Droppable>
             </DragDropContext>
           </Table>
-        ) : (isToday(date) ?? isTomorrow(date)) ? (
+        ) : isToday(date) || isTomorrow(date) ? (
           <p className='italic text-muted-foreground'>
             There&apos;re no plans for {isToday(date) ? 'today' : 'tomorrrow'} yet. Let&apos;s start with creatingone
             first or let&apos;s generate with AI
@@ -222,6 +247,8 @@ export default function AllTodos({ date, isLoading, isSuccess, data }: Props) {
         onOpenChange={setopenPrompt}
         cb={() => deleteTodo(deleteId!)}
       />
+
+      <Confetti width={width} height={height} numberOfPieces={1000} recycle={!allCompleted} run={allCompleted} />
     </div>
   )
 }

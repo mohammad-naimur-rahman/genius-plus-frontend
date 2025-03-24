@@ -14,19 +14,23 @@ const activeFeaturesTill = 3
 export default function FeatureCard({ feature }: Props) {
   return (
     <CardWrapper
-      className={cn('flex cursor-pointer items-start justify-start gap-x-8 gap-y-2 text-balance', {
-        'w-full cursor-not-allowed select-none opacity-70': feature.id > activeFeaturesTill
-      })}
+      containerClassName='h-full'
+      className={cn(
+        'flex cursor-pointer flex-col items-center justify-center gap-x-8 gap-y-1 text-balance p-3 sm:flex-row sm:items-start sm:justify-start sm:gap-y-2 sm:p-4',
+        {
+          'w-full cursor-not-allowed select-none opacity-70': feature.id > activeFeaturesTill
+        }
+      )}
       onClick={e => {
         if (feature.id > activeFeaturesTill) {
           e.preventDefault()
         }
       }}
     >
-      <Img src={feature.icon} alt={feature.title} className='w-20' />
-      <div className='flex flex-col gap-y-2'>
-        <p className='text-xl font-medium text-secondary-foreground'>{feature.title}</p>
-        <p className='text-sm font-medium text-muted-foreground'>{feature.description}</p>
+      <Img src={feature.icon} alt={feature.title} className='w-12 sm:w-20' />
+      <div className='flex flex-col justify-center gap-y-2 text-center sm:justify-start sm:text-left'>
+        <p className='text-base font-medium text-secondary-foreground sm:text-xl'>{feature.title}</p>
+        <p className='text-xs font-medium text-muted-foreground sm:text-sm'>{feature.description}</p>
       </div>
     </CardWrapper>
   )
